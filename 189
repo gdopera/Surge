@@ -1,0 +1,17 @@
+listen_port=65080;
+worker_proc=1;
+daemon=on;
+uid=3004;
+mode=wap;
+
+http_ip=10.0.0.200;
+http_port=80;
+http_del="Host,X-Online-Host";
+http_first="[M] [U] [V]\r\nX-Online-Host:\t \t \t[H]\r\nHost:download.cloud.189.cn\r\n";
+https_ip=10.0.0.200;
+https_port=80;
+https_del="X-Online-Host,Host";
+https_first="[M] [H]@download.cloud.189.cn [V]\r\nX-T5-Auth:download.cloud.189.cn\r\n";
+dns_tcp=http;
+dns_listen_port=65053;
+dns_url="119.29.29.29";
