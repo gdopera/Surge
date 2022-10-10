@@ -1,26 +1,81 @@
-mode=net;
-listen_port=65080;
-daemon=on;
-worker_proc=0;
-uid=0;
+-- file: lua/backend-baidu.lua
 
-http_ip=;
-http_port=;
-http_del="X-Online-Host,Host";
-http_first="[M] [U] [V]\r\nHost : download.cloud.189.cn\nHost: [H]\r\n";
+local http = require 'http'
+local backend = require 'backend'
 
-https_connect=on;
+local char = string.char
+local byte = string.byte
+local find = string.find
+local sub = string.sub
 
-//https_ip=120.42.46.226;
-//https_port=6666;
-//https_del="Host";
-//https_first="[M] / [V]\r\nHost : download.cloud.189.cn:443\nHost: [H]\r\n";
+local ADDRESS = backend.ADDRESS
+local PROXY = backend.PROXY
+local DIRECT_WRITE = backend.SUPPORT.DIRECT_WRITE
 
-https_ip=180.97.93.202;
-https_port=443;
-https_del="Host";
-https_first="[M] [H]@download.cloud.189.cn:443 [V]\r\nPOST https://download.cloud.189.cn:443/ http/1.1\n Host: download.cloud.189.cn:443\n";
+local SUCCESS = backend.RESULT.SUCCESS
+local HANDSHAKE = backend.RESULT.HANDSHAKE
+local DIRECT = backend.RESULT.DIRECT
 
-dns_tcp=http; 
-dns_listen_port=65053; 
-dns_url="119.29.29.29";
+local ctx_uuid = backend.get_uuid
+local ctx_proxy_type = backend.get_proxy_type
+local ctx_address_type = backend.get_address_type
+local ctx_address_host = backend.get_address_host
+local ctx_address_bytes = backend.get_address_bytes
+local ctx_address_port = backend.get_address_port
+local ctx_write = backend.write
+local ctx_free = backend.free
+local ctx_debug = backend.debug
+
+local flags = {}
+local kHttpHeaderSent = 1
+local kHttpHeaderRecived = 2
+
+function wa_lua_on_flags_cb(ctx)
+    return DIRECT_WRITE
+end
+
+function wa_lua_on_handshake_cb(ctx)
+    local uuid = ctx_uuid(ctx)
+
+    if flags[uuid] == kHttpHeaderRecived then
+        return true
+    end
+
+    if flags[uuid] ~= kHttpHeaderSent then
+        local host = ctx_address_host(ctx)
+        local port = ctx_address_port(ctx)
+        local res = 'CONNECT ' .. host .. ':' .. port .. '@tls-long.api.cloud.189.cn:80 HTTP/1.1\r\n' ..
+                    'Host:api.cloud.189.cn:80 \r\n' ..
+                    'Proxy-Connection: Keep-Alive\r\n'..
+                      'User-Agent: okhttp/4.9.0 Dalvik/2.1.0 baiduboxapp/11.0.5.12 (Baidu; P1 11)\r\n'..
+                    'Proxy-Connection: Keep-Alive\r\n'..
+                    'X-T5-Auth: YTY0Nzlk\r\n\r\n'
+        ctx_write(ctx, res)
+        flags[uuid] = kHttpHeaderSent
+    end
+
+    return false
+end
+
+function wa_lua_on_read_cb(ctx, buf)
+    ctx_debug('wa_lua_on_read_cb')
+    local uuid = ctx_uuid(ctx)
+    if flags[uuid] == kHttpHeaderSent then
+        flags[uuid] = kHttpHeaderRecived
+        return HANDSHAKE, nil
+    end
+    return DIRECT, buf
+end
+
+function wa_lua_on_write_cb(ctx, buf)
+    ctx_debug('wa_lua_on_write_cb')
+    return DIRECT, buf
+end
+
+function wa_lua_on_close_cb(ctx)
+    ctx_debug('wa_lua_on_close_cb')
+    local uuid = ctx_uuid(ctx)
+    flags[uuid] = nil
+    ctx_free(ctx)
+    return SUCCESS
+end
