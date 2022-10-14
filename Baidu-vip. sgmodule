@@ -3,7 +3,7 @@
 #!desc=百度会员解锁
 
 [Script]
-百度vip解锁 = type=http-response,pattern =https:\/\/pan\.baidu\.com\/rest\/\d\.\d\/membership\/user url script-response-body https://raw.githubusercontent.com/ddgksf2013/Cuttlefish/master/Crack/bdcloud.js,script-update-interval=0
+百度vip解锁 = type=http-response,pattern = https:\/\/pan\.baidu\.com\/rest\/\d\.\d\/membership\/user url script-response-body https://raw.githubusercontent.com/ddgksf2013/Cuttlefish/master/Crack/bdcloud.js,script-update-interval=0
 
 [MITM]
 hostname = %APPEND% pan.baidu.com
