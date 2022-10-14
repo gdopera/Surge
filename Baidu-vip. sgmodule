@@ -6,4 +6,4 @@
 百度vip解锁-proto = type=http-response,pattern=^http-response,pattern = https:\/\/pan\.baidu\.com\/rest\/\d\.\d\/membership\/user url script-response-body https://raw.githubusercontent.com/ddgksf2013/Cuttlefish/master/Crack/bdcloud.js,script-update-interval=0
 
 [MITM]
-hostname = %APPEND% pan.baidu.com
+hostname = %APPEND% lchttpapi.xczim.com, app.yiyan.art, *kuwo*, *lrts*, gateway.caixin.com, notability.com, pan.baidu.com, spclient.wg.spotify.com, *wps*, ticktick.com, dida365.com, ap*.intsig.net, ipadcms.caixin.com, server.yoyiapp.com, *.aoscdn.com, *.xiuxiu.meitu.com, claritywallpaper.com, api.meiease.cn, restore-access.indream.app, appraven.net
