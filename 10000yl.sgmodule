@@ -1,11 +1,15 @@
-#!name=余量面版
-#!desc=查看流量信息
-#!system=ios
-# 更新日期：2022.10.15
-# 版本：1.5
-
-[Panel]
-余量面版 = script-name=余量面版, content="请刷新", style=info, update-interval=1
+#!url=https://raw.githubusercontent.com/QGCliveDavis/Module/main/Telecom/Tele_ShadowRocket.Module
+#!name=电信余量
+#!desc=流量信息查看
 
 [Script]
-余量面版 = type=generic,timeout=3,script-path=https://raw.githubusercontent.com/gdopera/Surge/main/yljs.js
+请求体获取 = type=http-request,script-path=https://raw.githubusercontent.com/QGCliveDavis/Module/main/Telecom/GetBd.js,pattern=^https?:\/\/czapp\.bestpay\.com\.cn,max-size=131072,requires-body=true,timeout=10,script-update-interval=86400
+
+[Panel]
+电信余量 = script-name=电信余量, content="请刷新"
+
+[Script]
+电信余量 = type=cron,cronexp=0 0/15 * * * ?,timeout=60,script-path=https://raw.githubusercontent.com/gdopera/Surge/main/yljs.js
+
+[MITM]
+hostname = %APPEND% czapp.bestpay.com.cn
