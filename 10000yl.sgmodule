@@ -8,4 +8,4 @@
 余量面版 = script-name=余量面版, content="请刷新", style=info, update-interval=1
 
 [Script]
-余量面版 = type=generic,timeout=3,script-path=https://raw.githubusercontent.com/QGCliveDavis/Module/main/Telecom/Tele_Cellular.js
+余量面版 = type=generic,timeout=3,script-path=https://raw.githubusercontent.com/gdopera/Surge/main/yljs.js
