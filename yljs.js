@@ -1,7 +1,7 @@
 /* *
 [task_local]
 #电信余量
-0-59/5 * * * * https://raw.githubusercontent.com/gdopera/Surge/main/yljs.js, tag=电信余量, enabled=true
+0-59/5 * * * * https://raw.githubusercontent.com/QGCliveDavis/Module/main/Telecom/Tele_Cellular.js, tag=电信余量, enabled=true
 * */
 
 const $ = new Env(`电信余量`)
@@ -190,7 +190,7 @@ const $ = new Env(`电信余量`)
 
     }).finally(() => {
 		panel['title']=$.getdata('key_brond')
-panel['content']='今日免流：'+tile_unlimitTotal+'今日跳点：'+tile_limitTotal+\n+'本月免流：'+tile_unlimitUsageTotal+'本月免流：'+tile_limitUsageTotal+\n+'查询时间：'+Tile_All['Tile_Time']
+		panel['content']='今日免流/跳点：'+Tile_All['Tile_Today']+`\n`+'本月免流/跳点：'+Tile_All['Tile_Month']+`\n`+'查询时间：'+Tile_All['Tile_Time']
 		$.done(panel)
       })
   }catch(e){$.log('错误：'+e)}   
