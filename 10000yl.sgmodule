@@ -1,11 +1,11 @@
-#!name=电信余
+#!name=余量面版
 #!desc=查看流量信息
 #!system=ios
-# 更新日期：2022.08.14
+# 更新日期：2022.10.15
 # 版本：1.5
 
 [Panel]
-电信余 = script-name=电信余, title="节点详情", content="请刷新", style=info, update-interval=1
+余量面版 = script-name=余量面版, content="请刷新", style=info, update-interval=1
 
 [Script]
-电信余 = type=generic,timeout=3,script-path=https://raw.githubusercontent.com/QGCliveDavis/Module/main/Telecom/Tele_Cellular.js
+余量面版 = type=generic,timeout=3,script-path=https://raw.githubusercontent.com/QGCliveDavis/Module/main/Telecom/Tele_Cellular.js
