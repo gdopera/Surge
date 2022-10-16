@@ -12,7 +12,7 @@ const $ = new Env(`电信余量`)
         title: '电信余量',
         content: ``,
         backgroundColor: "#0099FF",
-        icon: "dial.max.fill",
+        icon: "hourglass.circle",
     }
 		
     let Month0=formatTime().month-1
