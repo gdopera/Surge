@@ -11,7 +11,7 @@ const $ = new Env(`电信余量`)
     let panel = {
         title: '电信余量',
         content: ``,
-        backgroundColor: "#0099FF",
+        backgroundColor: "#33CCCC",
         icon: "hourglass.circle",
     }
 		
