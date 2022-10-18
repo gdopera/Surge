@@ -1,12 +1,12 @@
 #!url=https://raw.githubusercontent.com/gdopera/Surge/main/GW-IP.sgmodule
-#!name=IP-Check
+#!name=国外IP
 #!desc=查看节点IP信息
 #!system=ios
-# 更新日期：2022.08.14
+# 更新日期：2022.10.15
 # 版本：1.5
 
 [Panel]
-IP-Check = script-name=IP-Check, title="节点详情", content="请刷新", style=info, update-interval=1
+国外IP = script-name= 国外IP, title="节点详情", content="请刷新", style=info, update-interval=1
 
 [Script]
-IP-Check = type=generic,timeout=3,script-path= https://raw.githubusercontent.com/gdopera/Surge/main/GWIP.js
+国外IP = type=generic,timeout=3,script-path= https://raw.githubusercontent.com/gdopera/Surge/main/GWIP.js
