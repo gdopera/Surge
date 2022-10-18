@@ -190,7 +190,7 @@ const $ = new Env(`电信余量`)
 
     }).finally(() => {
 		panel['title']=$.getdata('key_brond')
-		panel['content']='今日定向/通用: '+Tile_All['Tile_Today']+`\n`+'本月定向/通用: '+Tile_All['Tile_Month']+`\n`+'运营商: 中国电信: 查询时间: '+Tile_All['Tile_Time']
+		panel['content']='今日定向/通用: '+Tile_All['Tile_Today']+`\n`+'本月定向/通用: '+Tile_All['Tile_Month']+`\n`+'中国电信/查询时间: '+Tile_All['Tile_Time']
 		$.done(panel)
       })
   }catch(e){$.log('错误：'+e)}   
