@@ -2,8 +2,8 @@ $httpClient.get("https://forge.speedtest.cn/api/location/info", function (error,
     let dataObject = JSON.parse(data);
     let { country, province, isp, city, ip } = dataObject;
     isp = `运营商：${isp}`;
-    ip = `IP：${ip}`;
-    let region = `地区：${country} ${province} ${city}`;
+    ip = `IP信息：${ip}`;
+    let region = `地区信息：${country} ${province} ${city}`;
     body={
         title: "国内节点",
         content: `${isp}\n${ip}\n${region}`,
