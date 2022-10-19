@@ -1,0 +1,11 @@
+#!url=https://raw.githubusercontent.com/QGCliveDavis/Module/main/Telecom/Tele_ShadowRocket.Module
+#!name=快速切换
+#!desc=快速切换节点
+
+[Panel]
+
+快速切换 = script-name=快速切换,update-interval=1
+
+[Script]
+
+快速切换 = type=generic,timeout=10,script-path=https://raw.githubusercontent.com/Rabbit-Spec/Surge/Master/Module/Panel/Group-Panel/Moore/Group-Panel.js,argument=icon=network&color=#86abee&group=国内直连
