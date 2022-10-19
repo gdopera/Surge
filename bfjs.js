@@ -1,7 +1,7 @@
 /* *
 [task_local]
 #电信余量
-0-59/5 * * * * https://raw.githubusercontent.com/gdopera/Surge/main/bfjs.js, tag=电信余量, enabled=true
+0-59/5 * * * * https://ghproxy.com/https://raw.githubusercontent.com/gdopera/Surge/main/bfjs.js, tag=电信余量, enabled=true
 * */
 
 const $ = new Env(`电信余量`)
