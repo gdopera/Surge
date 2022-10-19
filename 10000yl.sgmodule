@@ -1,4 +1,4 @@
-#!url= https://raw.githubusercontent.com/gdopera/Surge/main/10000yl.sgmodule
+#!url= https://ghproxy.com/https://raw.githubusercontent.com/gdopera/Surge/main/10000yl.sgmodule
 #!name=流量监控
 #!desc=查看流量使用情况
 
@@ -6,8 +6,8 @@
 流量监控 = script-name=流量监控,update-interval=1800
 
 [Script]
-请求体获取 = type=http-request,script-path=https://raw.githubusercontent.com/gdopera/Surge/main/10000qqt.js,pattern=^https?:\/\/czapp\.bestpay\.com\.cn,max-size=131072,requires-body=true,timeout=10,script-update-interval=86400
-流量监控 = type=generic, timeout=15, script-path=https://raw.githubusercontent.com/gdopera/Surge/main/bfjs.js
+请求体获取 = type=http-request,script-path= https://ghproxy.com/https://raw.githubusercontent.com/gdopera/Surge/main/10000qqt.js,pattern=^https?:\/\/czapp\.bestpay\.com\.cn,max-size=131072,requires-body=true,timeout=10,script-update-interval=86400
+流量监控 = type=generic, timeout=15, script-path= https://ghproxy.com/https://raw.githubusercontent.com/gdopera/Surge/main/bfjs.js
 
 [MITM]
 hostname = %APPEND% czapp.bestpay.com.cn
