@@ -129,8 +129,8 @@ const $ = new Env(`电信余量`)
     	if(thisminutes<10){tile_minute='0'+thisminutes}
 		else{tile_minute=thisminutes}
 
-		Tile_All['Tile_Today']=ToSize(tile_unlimitTotal,1,0,1)+'跳点'+ToSize(tile_limitTotal,1,0,1)
-		Tile_All['Tile_Month']=ToSize(tile_unlimitUsageTotal,1,0,1)+'跳点'+ToSize(tile_limitUsageTotal,1,0,1)
+		Tile_All['Tile_Today']=ToSize(tile_unlimitTotal,1,0,1)+'通用'+ToSize(tile_limitTotal,1,0,1)
+		Tile_All['Tile_Month']=ToSize(tile_unlimitUsageTotal,1,0,1)+'通用'+ToSize(tile_limitUsageTotal,1,0,1)
 		Tile_All['Tile_Time']=tile_hour+':'+tile_minute
 
 		let notice_body=$.getdata('notice_body');
