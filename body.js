@@ -4,7 +4,7 @@
 hostname=czapp.bestpay.com.cn
 
 [rewrite_local]
-^https?:\/\/czapp\.bestpay\.com\.cn url script-request-body https://raw.githubusercontent.com/gdopera/Surge/main/body.js
+^https?:\/\/czapp\.bestpay\.com\.cn url script-request-body https://ghproxy.com/https://raw.githubusercontent.com/gdopera/Surge/main/body.js
 * */
 
 const $ = new Env('中国电信获取body');
