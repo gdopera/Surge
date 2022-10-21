@@ -1,12 +1,9 @@
 #!url=https://raw.githubusercontent.com/gdopera/Surge/main/GW-IP.sgmodule
-#!name=国外IP
-#!desc=查看节点IP信息
-#!system=ios
-# 更新日期：2022.10.15
-# 版本：1.5
+#!name=当前国外信息
+#!desc=请前往无视安装
 
 [Panel]
-全球加速 = script-name= 全球加速, title="节点详情", content="请刷新", style=info, update-interval=1
+全球加速 = script-name= 全球加速, content="请刷新", style=info, update-interval=1
 
 [Script]
-全球加速 = type=generic,timeout=3,script-path= https://raw.githubusercontent.com/gdopera/Surge/main/GWIP.js
+全球加速 = https://raw.githubusercontent.com/gdopera/Surge/main/GWIP.js
