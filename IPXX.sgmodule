@@ -1,9 +1,9 @@
 #!url= https://raw.githubusercontent.com/gdopera/Surge/main/IPXX.sgmodule
-#!name=当前免流信息
+#!name=国内节上
 #!desc=请前往无视安装
 
 [Panel]
-中国宁波 = script-name= 中国宁波, content="请刷新", style=info, update-interval=1
+中国直连 = script-name= 中国直连, content="请刷新", style=info, update-interval=1
 
 [Script]
-中国宁波 = https://raw.githubusercontent.com/gdopera/Surge/main/IPxx.js
+中国直连 = https://raw.githubusercontent.com/gdopera/Surge/main/IPxx.js
