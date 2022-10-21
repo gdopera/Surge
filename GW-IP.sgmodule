@@ -6,7 +6,7 @@
 # 版本：1.5
 
 [Panel]
-全球加速 = script-name= 国外IP, title="节点详情", content="请刷新", style=info, update-interval=1
+全球加速 = script-name= 全球加速, title="节点详情", content="请刷新", style=info, update-interval=1
 
 [Script]
 全球加速 = type=generic,timeout=3,script-path= https://raw.githubusercontent.com/gdopera/Surge/main/GWIP.js
