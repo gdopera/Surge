@@ -1,36 +1,14 @@
-/*
- * 由@congcong0806编写
- * 原脚本地址：https://github.com/congcong0806/surge-list/blob/master/Script/ipcheck.js
- * 由@Rabbit-Spec修改
- * 更新日期：2022.08.14
- * 版本：1.5
- */
-
-let url = "http://ip-api.com/json"
-
-$httpClient.get(url, function(error, response, data){
-    let jsonData = JSON.parse(data)
-    let country = jsonData.country
-    let emoji = getFlagEmoji(jsonData.countryCode)
-    let city = jsonData.city
-    let isp = jsonData.isp
-    let ip = jsonData.query
-  body = {
-    title: "国外节点",
-    content: `运营商: ${isp}\nIP信息: ${ip}\n地区信息: ${country} - ${city}`,
-    icon: "globe.asia.australia.fill"
-  }
-  $done(body);
-});
-
-function getFlagEmoji(countryCode) {
-      if (countryCode.toUpperCase() == 'TW') {
-    countryCode = 'CN'
-  }
-  const codePoints = countryCode
-    .toUpperCase()
-    .split('')
-    .map(char => 127397 + char.charCodeAt())
-  return String.fromCodePoint(...codePoints)
-
-}
+$httpClient.get("https://forge.speedtest.cn/api/location/info", function (error, response, data) {
+    let dataObject = JSON.parse(data);
+    let { country, province, isp, city, ip } = dataObject;
+    isp = `运营商: ${isp}`;
+    ip = `IP信息: ${ip}`;
+    let region = `地区信息: ${country} ${province} ${city}`;
+    body={
+        title: "全球加速",
+        content: `${isp}\n${ip}\n${region}`,
+        backgroundColor: "#FF6600",
+        icon: "antenna.radiowaves.left.and.right.circle.fill",
+    }
+    $done(body)
+})
