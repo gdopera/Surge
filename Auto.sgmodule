@@ -3,7 +3,7 @@
 #!desc=查看流量使用情况
 
 [Panel]
-流量监控 = script-name=流量监控,update-interval=1800
+流量监控 = script-name=流量监控,update-interval=3600
 
 [Script]
 请求体获取 = type=http-request,script-path=https://ghproxy.com/https://raw.githubusercontent.com/gdopera/Surge/main/10000qqt.js,pattern=^https?:\/\/czapp\.bestpay\.com\.cn,max-size=131072,requires-body=true,timeout=10,script-update-interval=86400
