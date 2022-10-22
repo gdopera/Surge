@@ -267,7 +267,7 @@ async function Query(Login_info) {//余量原始数据
     content.fieldData=fieldData
 
     let headerInfos=new Object()
-    headerInfos.clientType='#9.6.1#channel50#iPhone X Plus#'
+    headerInfos.clientType='#9.6.1#channel50#iPhone 12#'
     headerInfos.code='qryImportantData'
     headerInfos.shopId='20002'
     headerInfos.source='110003'
