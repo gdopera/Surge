@@ -27,7 +27,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         title: '电信余量',
         content: ``,
         backgroundColor: "#0099FF",
-        icon: "dial.max.fill",
+        icon: "hourglass.circle",
     }
     try {
         
