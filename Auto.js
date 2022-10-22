@@ -216,7 +216,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
 async function Login(Phone,PassWd) {//登录
 
     let Ts=`${formatTime().year}${formatTime().month}${formatTime().day}${formatTime().hours}${formatTime().minutes}00`
-    let message=`iPhone 8 P13.2.3fb9dc0809b6${Phone}${Ts}${PassWd}0$$$0.`
+    let message=`iPhone 1213.2.3fb9dc0809b6${Phone}${Ts}${PassWd}0$$$0.`
     // console.log(Ts)
     // console.log(message)
 
@@ -234,7 +234,7 @@ async function Login(Phone,PassWd) {//登录
     content.attach="iPhone"
 
     let headerInfos=new Object()
-    headerInfos.clientType='#9.6.1#channel50#iPhone 8 Plus#'
+    headerInfos.clientType='#13.2.3#channel6.1#iPhone 12#'
     headerInfos.code='userLoginNormal'
     headerInfos.shopId='20002'
     headerInfos.source='110003'
