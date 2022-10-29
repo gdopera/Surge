@@ -5,6 +5,7 @@ var navigator=navigator||{};var window=window||{};ASN1={};Hex={};Base64S={};var 
 const Tele_AutoCheck_key_brond=`Tele_AutoCheck.key_brond`
 const Tele_AutoCheck_LoginName=`Tele_AutoCheck.LoginName`
 const Tele_AutoCheck_LoginPw=`Tele_AutoCheck.LoginPw`
+const Tele_AutoCheck_SetVal=`Tele_AutoCheck.SetVal`
 const Tele_AutoCheck_hourstimeStore=`Tele_AutoCheck.hourstimeStore`
 const Tele_AutoCheck_minutestimeStore=`Tele_AutoCheck.minutestimeStore`
 const Tele_AutoCheck_limitStore=`Tele_AutoCheck.limitStore`
@@ -27,7 +28,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         title: '电信余量',
         content: ``,
         backgroundColor: "#0099FF",
-        icon: "hourglass.circle",
+        icon: "dial.max.fill",
     }
     try {
         
@@ -36,7 +37,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         let Days = formatTime().day
         let lasthours = $.getdata(Tele_AutoCheck_hourstimeStore)
         let lastminutes = $.getdata(Tele_AutoCheck_minutestimeStore)
-        let minutesused, Login_info, Tokenexpired
+        let minutesused, Tokenexpired,jsonData,ArrayQuery
         let isFirst=false
 
         if (lasthours == undefined && lastminutes == undefined) isFirst = true
@@ -72,38 +73,31 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
 
         if(Phone==''||PassWd=='') {throw '请在Boxjs中设置登录账号与密码'}
 
-        let jsonData
-
         if(!isFirst){
-            jsonData = await Query($.getjson(Tele_AutoCheck_querybody))
+            do{jsonData = await Query($.getjson(Tele_AutoCheck_querybody))}while(jsonData!='err'&&jsonData.responseData!=null&&jsonData.responseData.data.flowInfo==null);
             $.setjson(jsonData,Tele_AutoCheck_packge_detail)
         }
-
- 
 
         if(jsonData!=undefined&&(jsonData=='err'||jsonData.headerInfos.code=='X104'||jsonData.headerInfos.code=='X201')) Tokenexpired=true
 
         if(isFirst||Tokenexpired||jsonData.status=='400'||jsonData.status=='415') {
 
             let trylogin=await Login(Phone,PassWd) //尝试使用账号密码登录
-            $.setjson(trylogin,Tele_AutoCheck_packge_detail)
-
-            Login_info=$.getjson(Tele_AutoCheck_packge_detail)
-
-           if(trylogin.responseData.resultCode!="0000") throw trylogin.responseData.resultDesc
+            if(trylogin.responseData.resultCode!="0000") throw trylogin.responseData.resultDesc
             if(isFirst) $.log('当前为初次使用，尝试获取Token')
             if(Tokenexpired) $.log('当前Token已过期，尝试获取Token')
             $.log(`\n`+JSON.stringify(trylogin))
 			$.setjson(trylogin,Tele_AutoCheck_querybody)
-        	jsonData = await Query(trylogin)
+            do{jsonData = await Query(trylogin)}while(jsonData!='err'&&jsonData.responseData!=null&&jsonData.responseData.data.flowInfo==null);
 
+            $.setjson(jsonData,Tele_AutoCheck_packge_detail)
         }
-       
-        let ArrayQuery = Query_All(jsonData)
+
+        ArrayQuery = Query_All(jsonData)
 
         let brond = $.getdata(Tele_AutoCheck_key_brond)
-        if ($.getdata(Tele_AutoCheck_key_brond) == undefined|| $.getdata(Tele_AutoCheck_key_brond) == '') {
-            brond = jsonData.responseData.data.balanceInfo.phoneBillBars[1].title
+        if (brond== undefined|| brond == '') {
+            brond = (await ProductName($.getjson(Tele_AutoCheck_querybody))).responseData.data.mainProductOFFInfo.productOFFName
             $.setdata(brond, Tele_AutoCheck_key_brond)
         }
 
@@ -117,14 +111,14 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         let unlimitChange = unlimitThis - unlimitLast
 
         try {
-            if (unlimitLast == '' || unlimitThis - unlimitLast < 0 || limitLast == '') throw 'err'
+            if (unlimitLast == '' || unlimitThis - unlimitLast < 0 || limitLast == ''||limitThis-limitLast<0) throw 'err'
         } catch (e) {
             if (e == 'err') {
                 $.setdata($.toStr(0), Tele_AutoCheck_limitStore)
                 $.setdata($.toStr(0), Tele_AutoCheck_unlimitStore)
-                title = "当前为初次查询或上次查询有误"
-                body = '已将上次查询归0'
-                body1 = '下次通知可能会有误，不用在意'
+                title = "数据修正"
+                body = '修正后：'
+                body1 = '通用使用：'+ToSize(limitThis,0,0,1)+' 定向使用：'+ToSize(unlimitThis,0,0,1)
                 Notice(title, body, body1)
             }
         }
@@ -147,13 +141,11 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         let tile_unlimitUsageTotal = ArrayQuery.unlimitusage//面板本月定向使用量
         let tile_limitUsageTotal = ArrayQuery.limitusage//面板本月通用使用量
 
-        if (thishours < 10) { tile_hour = '0' + thishours }
-        else { tile_hour = thishours }
-        if (thisminutes < 10) { tile_minute = '0' + thisminutes }
-        else { tile_minute = thisminutes }
+        if (thishours < 10) { tile_hour = '0' + thishours }else { tile_hour = thishours }
+        if (thisminutes < 10) { tile_minute = '0' + thisminutes }else { tile_minute = thisminutes }
 
-        Tile_All['Tile_Today'] = ToSize(tile_unlimitTotal, 1, 0, 1) + ' 通用' + ToSize(tile_limitTotal, 1, 0, 1)
-        Tile_All['Tile_Month'] = ToSize(tile_unlimitUsageTotal, 1, 0, 1) + ' 通用' + ToSize(tile_limitUsageTotal, 1, 0, 1)
+        Tile_All['Tile_Today'] = ToSize(tile_unlimitTotal, 1, 0, 1) + '/' + ToSize(tile_limitTotal, 1, 0, 1)
+        Tile_All['Tile_Month'] = ToSize(tile_unlimitUsageTotal, 1, 0, 1) + '/' + ToSize(tile_limitUsageTotal, 1, 0, 1)
         Tile_All['Tile_Time'] = tile_hour + ':' + tile_minute
 
         let notice_body = $.getdata(Tele_AutoCheck_notice_body);
@@ -163,11 +155,10 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         } else { notice_body = $.getdata(Tele_AutoCheck_notice_body).split('/') }
 
 
-        $.log(`\n` + '流量卡名：' + brond + `\n` + '[1]' + brond + '通用：已用' + ToSize(ArrayQuery.limitusage, 2, 0, 1) + `\n` + '[2]' + brond + '定向：已用' + ToSize(ArrayQuery.unlimitusage, 2, 0, 1) + `\n` + '剩余流量：' + `\n` + '通用剩余：' + ToSize(ArrayQuery.limitleft, 2, 0, 1) + ' 定向剩余：' + ToSize(ArrayQuery.unlimitleft, 2, 0, 1) + `\n` + '定时通知间隔：' + interval + ' 分钟 流量变化阈值：' + ToSize(Tele_value, 1, 1, 1))
+        $.log(`\n` + '流量卡名：' + brond + `\n` + '[1]' + brond + '通用：已用' + ToSize(ArrayQuery.limitusage, 2, 0, 1) +' 剩余：' + ToSize(ArrayQuery.limitleft, 2, 0, 1) +`\n` + '[2]' + brond + '定向：已用' + ToSize(ArrayQuery.unlimitusage, 2, 0, 1) +' 剩余：' + ToSize(ArrayQuery.unlimitleft, 2, 0, 1)+ `\n\n` +'定时通知间隔：' + interval + ' 分钟 流量变化阈值：' + ToSize(Tele_value, 1, 1, 1))
         $.log("上次通用使用：" + ToSize(limitLast, 2, 0, 1) + " 当前通用使用：" + ToSize(limitThis, 2, 0, 1))
         $.log("上次定向使用：" + ToSize(unlimitLast, 2, 0, 1) + " 当前定向使用：" + ToSize(unlimitThis, 2, 0, 1))
         $.log("通用变化量：" + ToSize(limitChange, 2, 0, 1) + " 定向变化量：" + ToSize(unlimitChange, 2, 0, 1))
-
 
 
         if (Timer_Notice == "true") {
@@ -177,7 +168,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
                 $.setdata($.toStr(ArrayQuery.unlimitusage), Tele_AutoCheck_unlimitStore)
                 $.setdata($.toStr(thishours), Tele_AutoCheck_hourstimeStore)
                 $.setdata($.toStr(thisminutes), Tele_AutoCheck_minutestimeStore)
-                title = brond + '  耗时:' + minutesused + '分钟'
+                title = brond + '  耗时:' + formatMinutes(minutesused)
                 body = notice_body[0] + ToSize(unlimitChange, 2, 1, 1) + ' ' + notice_body[1] + ToSize(limitChange, 2, 1, 1)
                 body1 = notice_body[2] + ToSize(ArrayQuery.unlimitusage, 2, 1, 1) + ' ' + notice_body[3] + ToSize(ArrayQuery.limitleft, 2, 1, 1)
                 Notice(title, body, body1)
@@ -186,14 +177,14 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         } else if (Timer_Notice == "false") {
 
             $.log(`\n` + '当前为定时通知，时间间隔为 ' + interval + ' 分钟')
-            if (isFirst == true) $.log('首次使用：通知已发送！')
-            if (minutesused > interval || isFirst == true) {
+            if (isFirst) $.log('首次使用：通知已发送！')
+            if (minutesused > interval || isFirst) {
 
                 $.setdata($.toStr(ArrayQuery.limitusage), Tele_AutoCheck_limitStore)
                 $.setdata($.toStr(ArrayQuery.unlimitusage),Tele_AutoCheck_unlimitStore)
                 $.setdata($.toStr(thishours), Tele_AutoCheck_hourstimeStore)
                 $.setdata($.toStr(thisminutes), Tele_AutoCheck_minutestimeStore)
-                title = brond + '  耗时:' + minutesused + '分钟'
+                title = brond + '  耗时:' + formatMinutes(minutesused)
                 body = notice_body[0] + ToSize(unlimitChange, 2, 1, 1) + ' ' + notice_body[1] + ToSize(limitChange, 2, 1, 1)
                 body1 = notice_body[2] + ToSize(ArrayQuery.unlimitusage, 2, 1, 1) + ' ' + notice_body[3] + ToSize(ArrayQuery.limitleft, 2, 1, 1)
                 Notice(title, body, body1)
@@ -201,29 +192,40 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         }
 
         panel['title'] = $.getdata(Tele_AutoCheck_key_brond)
-        panel['content'] = '流量监控: 查询时间: '+Tile_All['Tile_Time'] +`\n`+'今日定向: '+Tile_All['Tile_Today'] +`\n`+'本月定向: '+Tile_All['Tile_Month']
+        panel['content'] = '今日免流/跳点：' + Tile_All['Tile_Today'] + `\n` + '本月免流/跳点：' + Tile_All['Tile_Month'] + `\n` + '查询时间：' + Tile_All['Tile_Time']
 
-    } catch (e) {
-        
-            $.log('错误：' + e)
-
-    }
+    } catch (e) {Notice('电信余量','错误❌原因：'+e,'');$.log('错误：' + e)}
     $.done(panel)
 
 })()
 
+function formatMinutes(value) {
+  let minute = parseInt(value)
+  let hour = 0
+  let day = 0
+  if (minute > 60) {
+    hour = parseInt(minute / 60)
+    minute = parseInt(minute % 60)
+    if (hour > 23) {
+      day = parseInt(hour / 24)
+      hour = parseInt(hour % 24)
+    }
+  }
 
+  let result = parseInt(minute) + '分钟'
+  if (hour > 0) result = parseInt(hour) + '小时'
+  if (day > 0) result = parseInt(day) + '天'
+  return result
+}
 async function Login(Phone,PassWd) {//登录
 
     let Ts=`${formatTime().year}${formatTime().month}${formatTime().day}${formatTime().hours}${formatTime().minutes}00`
-    let message=`iPhone 1213.2.3fb9dc0809b6${Phone}${Ts}${PassWd}0$$$0.`
-    // console.log(Ts)
-    // console.log(message)
+    let message=`iPhone X P13.2.3${Phone}${Phone}${Ts}${PassWd}0$$$0.`
 
     let fieldData=new Object()
     fieldData.accountType=''
     fieldData.authentication= PassWd
-    fieldData.deviceUid="3fb9dc0809b64549874e6775d8ed3aef"
+    fieldData.deviceUid=`3${Phone}`
     fieldData.isChinatelecom='0'
     fieldData.loginAuthCipherAsymmertric= RSAEncrypt(message) 
     fieldData.loginType= "4",
@@ -234,7 +236,7 @@ async function Login(Phone,PassWd) {//登录
     content.attach="iPhone"
 
     let headerInfos=new Object()
-    headerInfos.clientType='#13.2.3#channel6.1#iPhone 12#'
+    headerInfos.clientType='#9.6.1#channel50#iPhone X Plus#'
     headerInfos.code='userLoginNormal'
     headerInfos.shopId='20002'
     headerInfos.source='110003'
@@ -267,7 +269,7 @@ async function Query(Login_info) {//余量原始数据
     content.fieldData=fieldData
 
     let headerInfos=new Object()
-    headerInfos.clientType='#13.2.3#channel61#iPhone 12#'
+    headerInfos.clientType='#9.6.1#channel50#iPhone X Plus#'
     headerInfos.code='qryImportantData'
     headerInfos.shopId='20002'
     headerInfos.source='110003'
@@ -284,16 +286,56 @@ async function Query(Login_info) {//余量原始数据
             url: 'https://appfuwu.189.cn:9021/query/qryImportantData',
             headers: headers,
             body: JSON.stringify(querybody) // 请求体
-        }, function (error, response, data) { 
-        if(response.status==200)
-        resolve(JSON.parse(data)) 
-        else resolve('err')
+        }, function (error, response, data) {
+            let jsonData=JSON.parse(data)
+            if($.isShadowrocket()&&jsonData.hasOwnProperty('timestamp')) resolve('err')
+            else if($.isShadowrocket()&&!jsonData.hasOwnProperty('timestamp')) resolve(jsonData)
+
+            if(response.status!=200) resolve('err') 
+            else resolve(jsonData)
         })
+    })
+}
+
+async function ProductName(Login_info) {//余量原始数据
+    let Ts=`${formatTime().year}${formatTime().month}${formatTime().day}${formatTime().hours}${formatTime().minutes}00`
+    if(Login_info==''||Login_info==undefined||Login_info.responseData.resultCode!='0000') querybody=''
+    else{
+    let fieldData=new Object()
+    fieldData.queryFlag='0'
+    fieldData.accessAuth='1'
+    fieldData.account=TransPhone(Login_info.responseData.data.loginSuccessResult.phoneNbr)
+    let content=new Object()
+    content.fieldData=fieldData
+    content.attach="test"
+
+    let headerInfos=new Object()
+    headerInfos.clientType='#9.6.1#channel50#iPhone X Plus#'
+    headerInfos.timestamp=Ts
+    headerInfos.code='userFluxPackage'
+    headerInfos.shopId='20002'
+    headerInfos.source='110003'
+    headerInfos.sourcePassword='Sid98s'
+    headerInfos.token=Login_info.responseData.data.loginSuccessResult.token
+    headerInfos.userLoginName=Login_info.responseData.data.loginSuccessResult.phoneNbr
+
+    querybody=new Object()
+    querybody.content=content
+    querybody.headerInfos=headerInfos
+    }
+    return new Promise((resolve, reject) => {
+        $.post({
+            url: 'https://appfuwu.189.cn:9021/query/userFluxPackage',
+            headers: headers,
+            body: JSON.stringify(querybody) // 请求体
+        }, function (error, response, data) { resolve(JSON.parse(data)) })
     })
 }
 
 
 function Query_All(jsonData) {//原始量
+	let SetVal=$.getdata(Tele_AutoCheck_SetVal)
+    if(SetVal==undefined||SetVal=='') {$.setdata('',Tele_AutoCheck_SetVal)} else SetVal=SetVal*1048576
 
     UnlimitInfo = jsonData.responseData.data.flowInfo.specialAmount
     LimitInfo = jsonData.responseData.data.flowInfo.commonFlow
@@ -306,6 +348,16 @@ function Query_All(jsonData) {//原始量
     limitusagetotal = Number(LimitInfo.used)
     limitratabletotal = limitbalancetotal + limitusagetotal
 
+    if(SetVal!=''&&SetVal-limitratabletotal<0) {
+        limitusagetotal=SetVal-limitbalancetotal
+        unlimitusagetotal=unlimitusagetotal+limitratabletotal-SetVal
+        limitratabletotal=SetVal
+        unlimitratabletotal=limitratabletotal-SetVal+unlimitbalancetotal+unlimitusagetotal
+    }
+    if(SetVal!=''&&SetVal-limitratabletotal>0){
+        limitbalancetotal=SetVal-limitusagetotal
+        limitratabletotal=SetVal
+    }
     let queryinfo = { unlimitall: unlimitratabletotal, unlimitleft: unlimitbalancetotal, unlimitusage: unlimitusagetotal, limitall: limitratabletotal, limitleft: limitbalancetotal, limitusage: limitusagetotal }
     return queryinfo
 }
