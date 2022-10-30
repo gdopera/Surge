@@ -3,6 +3,9 @@
 #!desc=全能广告杀手
 
 [Rule]
+IP-CIDR,0.0.0.0/32,REJECT,no-resolve
+RULE-SET,https://raw.githubusercontent.com/zqzess/rule_for_quantumultX/master/QuantumultX/rules/AppleIOSUpdate.list,REJECT
+RULE-SET,https://ghproxy.com/https://raw.githubusercontent.com/NobyDa/Script/master/Surge/AdRule.list,REJECT
 DOMAIN-SET,https://cdn.jsdelivr.net/gh/geekdada/surge-list/domain-set/adaway.txt,REJECT
 DOMAIN-SET,https://cdn.jsdelivr.net/gh/geekdada/surge-list/domain-set/annoyances-filter.txt,REJECT
 DOMAIN-SET,https://cdn.jsdelivr.net/gh/geekdada/surge-list/domain-set/base-filter.txt,REJECT
