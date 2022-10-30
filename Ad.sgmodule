@@ -2,6 +2,7 @@
 #!name=广告杀手
 #!desc=全能广告杀手
 
+[Rule]
 RULE-SET,https://cdn.jsdelivr.net/gh/geekdada/surge-list/domain-set/adaway.txt,REJECT,update-interval=43200
 RULE-SET,https://cdn.jsdelivr.net/gh/geekdada/surge-list/domain-set/annoyances-filter.txt,REJECT,update-interval=43200
 RULE-SET,https://cdn.jsdelivr.net/gh/geekdada/surge-list/domain-set/base-filter.txt,REJECT,update-interval=43200
