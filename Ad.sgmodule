@@ -1,6 +1,6 @@
 #!url= https://raw.githubusercontent.com/gdopera/Surge/main/Ad.sgmodule
 #!name=去广告
-#!desc=全能去广告
+#!desc=神机去广告
 
 [Rule]
 IP-CIDR,0.0.0.0/32,REJECT,no-resolve
@@ -9,3 +9,8 @@ DOMAIN-SET,https://raw.githubusercontent.com/DivineEngine/Profiles/master/Surge/
 RULE-SET,https://raw.githubusercontent.com/NobyDa/Script/master/Surge/AdRule.list,REJECT
 RULE-SET,https://raw.githubusercontent.com/DivineEngine/Profiles/master/Surge/Ruleset/Guard/Hijacking.list,REJECT
 RULE-SET,https://raw.githubusercontent.com/DivineEngine/Profiles/master/Surge/Ruleset/Guard/Privacy.list,REJECT
+
+[URL Rewrite]
+RULE-SET,https://raw.githubusercontent.com/DivineEngine/Profiles/master/Quantumult/Rewrite/General.conf,REJECT
+RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rewrite/QuantumultX/Advertising/Advertising.conf,REJECT
+RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/zhihu/zhihu_plus.qxrewrite,REJECT
