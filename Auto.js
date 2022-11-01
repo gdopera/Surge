@@ -16,7 +16,7 @@ const Tele_AutoCheck_bark_add=`Tele_AutoCheck.bark_add`
 const Tele_AutoCheck_packge_detail=`Tele_AutoCheck.packge_detail`
 const Tele_AutoCheck_querybody=`Tele_AutoCheck.querybody`
 const Tele_AutoCheck_notice_switch=`Tele_AutoCheck.notice_switch`
-const Tele_AutoCheck_timeinterval=`Tele_AutoCheck.timeinterval`
+const Tele_AutoCheck_limit_choose=`Tele_AutoCheck.limit_choose`
 const Tele_AutoCheck_threshold=`Tele_AutoCheck.threshold`
 const Tele_AutoCheck_notice_body=`Tele_AutoCheck.notice_body`
 const Tele_AutoCheck_day=`Tele_AutoCheck.day`
@@ -28,7 +28,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         title: '电信余量',
         content: ``,
         backgroundColor: "#0099FF",
-        icon: "hourglass.circle",
+        icon: "dial.max.fill",
     }
     try {
         
@@ -44,12 +44,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         if (lasthours == undefined) lasthours = thishours
         if (lastminutes == undefined) lastminutes = thisminutes
         let hoursused = thishours - lasthours
-        let interval = $.getdata(Tele_AutoCheck_timeinterval)
-        if (interval == undefined) {
-            $.setdata($.toStr(5), Tele_AutoCheck_timeinterval)
-            interval = '5'
-        }
-
+        
         if (hoursused >= 0) { minutesused = (thisminutes - lastminutes) + hoursused * 60 } //上次查询的时间大于等于当前查询的时间
         else if (hoursused < 0 && lasthours <= 23) { minutesused = (60 - lastminutes) + (23 - lasthours + thishours) * 60 + thisminutes }
         //**********
@@ -74,7 +69,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         if(Phone==''||PassWd=='') {throw '请在Boxjs中设置登录账号与密码'}
 
         if(!isFirst){
-            do{jsonData = await Query($.getjson(Tele_AutoCheck_querybody))}while(jsonData!='err'&&jsonData.responseData!=null&&jsonData.responseData.data.flowInfo==null);
+            do{jsonData = await Query($.getjson(Tele_AutoCheck_querybody))}while(jsonData!='err'&&jsonData.responseData!=null&&jsonData.responseData.data.flowInfo.commonFlow==null);
             $.setjson(jsonData,Tele_AutoCheck_packge_detail)
         }
 
@@ -88,8 +83,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
             if(Tokenexpired) $.log('当前Token已过期，尝试获取Token')
             $.log(`\n`+JSON.stringify(trylogin))
 			$.setjson(trylogin,Tele_AutoCheck_querybody)
-            do{jsonData = await Query(trylogin)}while(jsonData!='err'&&jsonData.responseData!=null&&jsonData.responseData.data.flowInfo==null);
-
+            do{jsonData = await Query(trylogin)}while(jsonData!='err'&&jsonData.responseData!=null&&jsonData.responseData.data.flowInfo.commonFlow==null);
             $.setjson(jsonData,Tele_AutoCheck_packge_detail)
         }
 
@@ -105,22 +99,20 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         let unlimitThis = ArrayQuery.unlimitusage//定向使用量
         let limitLast = $.getdata(Tele_AutoCheck_limitStore) //将上次查询到的值读出来
         let unlimitLast = $.getdata(Tele_AutoCheck_unlimitStore) //将上次查询到的值读出来
-        if (limitLast == undefined) limitLast = limitThis
-        if (unlimitLast == undefined) unlimitLast = unlimitThis
+        if (limitLast == undefined) limitLast = limitThis;else limitLast=Number(limitLast)
+        if (unlimitLast == undefined) unlimitLast = unlimitThis;else unlimitLast=Number(unlimitLast)
         let limitChange = limitThis - limitLast
         let unlimitChange = unlimitThis - unlimitLast
 
-        try {
-            if (unlimitLast == '' || unlimitThis - unlimitLast < 0 || limitLast == ''||limitThis-limitLast<0) throw 'err'
-        } catch (e) {
-            if (e == 'err') {
-                $.setdata($.toStr(0), Tele_AutoCheck_limitStore)
-                $.setdata($.toStr(0), Tele_AutoCheck_unlimitStore)
-                title = "数据修正"
-                body = '修正后：'
-                body1 = '通用使用：'+ToSize(limitThis,0,0,1)+' 定向使用：'+ToSize(unlimitThis,0,0,1)
-                Notice(title, body, body1)
-            }
+        if (limitChange< 0 ||unlimitChange<0)
+        {
+            $.setdata($.toStr(0), Tele_AutoCheck_limitStore)
+            $.setdata($.toStr(0), Tele_AutoCheck_unlimitStore)
+            limitChange=0;unlimitChange=0;
+            title = "数据修正"
+            body = '修正后：'
+            body1 = '通用使用：'+ToSize(limitThis,0,0,1)+' 定向使用：'+ToSize(unlimitThis,0,0,1)
+            Notice(title, body, body1)
         }
 
         //***********
@@ -130,7 +122,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         if (tile_date == '') { $.setdata($.toStr(Days), Tele_AutoCheck_day) }//初次
         let tile_unlimittoday = $.getdata(Tele_AutoCheck_unlimittoday)
         let tile_limittoday = $.getdata(Tele_AutoCheck_limittoday)
-        if ((thishours == 0 && thisminutes == 0) || (tile_unlimittoday == '' || tile_limittoday == '') || tile_date != Days)//面板更新时间
+        if ((thishours == 0 && thisminutes == 0) || (tile_unlimittoday == '' || tile_limittoday == '') || tile_date != $.toStr(Days))//面板更新时间
         {
             $.setdata($.toStr(Days), Tele_AutoCheck_day)
             $.setdata($.toStr(ArrayQuery.unlimitusage), Tele_AutoCheck_unlimittoday)
@@ -144,8 +136,8 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         if (thishours < 10) { tile_hour = '0' + thishours }else { tile_hour = thishours }
         if (thisminutes < 10) { tile_minute = '0' + thisminutes }else { tile_minute = thisminutes }
 
-        Tile_All['Tile_Today'] = ToSize(tile_unlimitTotal, 1, 0, 1) + ' 通用: ' + ToSize(tile_limitTotal, 1, 0, 1)
-        Tile_All['Tile_Month'] = ToSize(tile_unlimitUsageTotal, 1, 0, 1) + ' 通用: ' + ToSize(tile_limitUsageTotal, 1, 0, 1)
+        Tile_All['Tile_Today'] = ToSize(tile_unlimitTotal, 1, 0, 1) + '/' + ToSize(tile_limitTotal, 1, 0, 1)
+        Tile_All['Tile_Month'] = ToSize(tile_unlimitUsageTotal, 1, 0, 1) + '/' + ToSize(tile_limitUsageTotal, 1, 0, 1)
         Tile_All['Tile_Time'] = tile_hour + ':' + tile_minute
 
         let notice_body = $.getdata(Tele_AutoCheck_notice_body);
@@ -155,15 +147,18 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         } else { notice_body = $.getdata(Tele_AutoCheck_notice_body).split('/') }
 
 
-        $.log(`\n` + '流量卡名：' + brond + `\n` + '[1]' + brond + '通用：已用' + ToSize(ArrayQuery.limitusage, 2, 0, 1) +' 剩余：' + ToSize(ArrayQuery.limitleft, 2, 0, 1) +`\n` + '[2]' + brond + '定向：已用' + ToSize(ArrayQuery.unlimitusage, 2, 0, 1) +' 剩余：' + ToSize(ArrayQuery.unlimitleft, 2, 0, 1)+ `\n\n` +'定时通知间隔：' + interval + ' 分钟 流量变化阈值：' + ToSize(Tele_value, 1, 1, 1))
+        $.log(`\n` + '流量卡名：' + brond + `\n` + '[1]' + brond + '通用：已用' + ToSize(ArrayQuery.limitusage, 2, 0, 1) +' 剩余：' + ToSize(ArrayQuery.limitleft, 2, 0, 1) +`\n` + '[2]' + brond + '定向：已用' + ToSize(ArrayQuery.unlimitusage, 2, 0, 1) +' 剩余：' + ToSize(ArrayQuery.unlimitleft, 2, 0, 1)+ `\n\n`+ ' 流量变化阈值：' + ToSize(Tele_value, 1, 1, 1))
         $.log("上次通用使用：" + ToSize(limitLast, 2, 0, 1) + " 当前通用使用：" + ToSize(limitThis, 2, 0, 1))
         $.log("上次定向使用：" + ToSize(unlimitLast, 2, 0, 1) + " 当前定向使用：" + ToSize(unlimitThis, 2, 0, 1))
         $.log("通用变化量：" + ToSize(limitChange, 2, 0, 1) + " 定向变化量：" + ToSize(unlimitChange, 2, 0, 1))
-
+        let Change=$.getdata(Tele_AutoCheck_limit_choose)
+        let val=false
+        if(Change=='true'&&limitChange >= Tele_value) val=true
+        if(Change=='false'&&(unlimitChange>=Tele_value||limitChange>=Tele_value)) val=true
 
         if (Timer_Notice == "true") {
             $.log(`\n` + '当前为变化通知，变化阈值为：' + ToSize(Tele_value, 1, 0, 1))
-            if (limitChange >= Tele_value) {
+            if (val) {
                 $.setdata($.toStr(ArrayQuery.limitusage), Tele_AutoCheck_limitStore)
                 $.setdata($.toStr(ArrayQuery.unlimitusage), Tele_AutoCheck_unlimitStore)
                 $.setdata($.toStr(thishours), Tele_AutoCheck_hourstimeStore)
@@ -174,11 +169,9 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
                 Notice(title, body, body1)
             }
 
-        } else if (Timer_Notice == "false") {
-
-            $.log(`\n` + '当前为定时通知，时间间隔为 ' + interval + ' 分钟')
+        } else if (isFirst||Timer_Notice == "false") {
+            $.log(`\n` + '当前为定时通知 间隔时间请去Cron中修改' )
             if (isFirst) $.log('首次使用：通知已发送！')
-            if (minutesused > interval || isFirst) {
 
                 $.setdata($.toStr(ArrayQuery.limitusage), Tele_AutoCheck_limitStore)
                 $.setdata($.toStr(ArrayQuery.unlimitusage),Tele_AutoCheck_unlimitStore)
@@ -188,11 +181,11 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
                 body = notice_body[0] + ToSize(unlimitChange, 2, 1, 1) + ' ' + notice_body[1] + ToSize(limitChange, 2, 1, 1)
                 body1 = notice_body[2] + ToSize(ArrayQuery.unlimitusage, 2, 1, 1) + ' ' + notice_body[3] + ToSize(ArrayQuery.limitleft, 2, 1, 1)
                 Notice(title, body, body1)
-            }
+            
         }
 
         panel['title'] = $.getdata(Tele_AutoCheck_key_brond)
-        panel['content'] = '流量监控: 查询时间: '+Tile_All['Tile_Time'] +`\n`+'今日定向: '+Tile_All['Tile_Today'] +`\n`+'本月定向: '+Tile_All['Tile_Month']
+        panel['content'] = '今日免流/跳点：' + Tile_All['Tile_Today'] + `\n` + '本月免流/跳点：' + Tile_All['Tile_Month'] + `\n` + '查询时间：' + Tile_All['Tile_Time']
 
     } catch (e) {Notice('电信余量','错误❌原因：'+e,'');$.log('错误：' + e)}
     $.done(panel)
