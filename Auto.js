@@ -133,8 +133,8 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         if (thishours < 10) { tile_hour = '0' + thishours }else { tile_hour = thishours }
         if (thisminutes < 10) { tile_minute = '0' + thisminutes }else { tile_minute = thisminutes }
 
-        Tile_All['Tile_Today'] = ToSize(tile_unlimitTotal, 1, 0, 1) + '/' + ToSize(tile_limitTotal, 1, 0, 1)
-        Tile_All['Tile_Month'] = ToSize(tile_unlimitUsageTotal, 1, 0, 1) + '/' + ToSize(tile_limitUsageTotal, 1, 0, 1)
+        Tile_All['Tile_Today'] = ToSize(tile_unlimitTotal, 1, 0, 1) + ' 通用: ' + ToSize(tile_limitTotal, 1, 0, 1)
+        Tile_All['Tile_Month'] = ToSize(tile_unlimitUsageTotal, 1, 0, 1) + ' 通用: ' + ToSize(tile_limitUsageTotal, 1, 0, 1)
         Tile_All['Tile_Time'] = tile_hour + ':' + tile_minute
 
         let notice_body = $.getdata(Tele_AutoCheck_notice_body);
@@ -178,7 +178,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         }
 
         panel['title'] = $.getdata(Tele_AutoCheck_key_brond)
-        panel['content'] = '今日免流/跳点：' + Tile_All['Tile_Today'] + `\n` + '本月免流/跳点：' + Tile_All['Tile_Month'] + `\n` + '查询时间：' + Tile_All['Tile_Time']
+        panel['content'] = '查询时间：' + Tile_All['Tile_Time'] + `\n` + '本月免流/跳点：' + Tile_All['Tile_Month'] + `\n` + '今日免流/跳点：' + Tile_All['Tile_Today']
 
     } catch (e) {Notice('电信余量','错误❌原因：'+e,'');$.log('错误：' + e)}
     $.done(panel)
