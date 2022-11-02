@@ -27,7 +27,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         title: '电信余量',
         content: ``,
         backgroundColor: "#0099FF",
-        icon: "hourglass.circle",
+        icon: "dial.max.fill",
     }
     try {
         
@@ -133,8 +133,8 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         if (thishours < 10) { tile_hour = '0' + thishours }else { tile_hour = thishours }
         if (thisminutes < 10) { tile_minute = '0' + thisminutes }else { tile_minute = thisminutes }
 
-        Tile_All['Tile_Today'] = ToSize(tile_unlimitTotal, 1, 0, 1) + '通用: ' + ToSize(tile_limitTotal, 1, 0, 1)
-        Tile_All['Tile_Month'] = ToSize(tile_unlimitUsageTotal, 1, 0, 1) + '通用: ' + ToSize(tile_limitUsageTotal, 1, 0, 1)
+        Tile_All['Tile_Today'] = ToSize(tile_unlimitTotal, 1, 0, 1) + '/' + ToSize(tile_limitTotal, 1, 0, 1)
+        Tile_All['Tile_Month'] = ToSize(tile_unlimitUsageTotal, 1, 0, 1) + '/' + ToSize(tile_limitUsageTotal, 1, 0, 1)
         Tile_All['Tile_Time'] = tile_hour + ':' + tile_minute
 
         let notice_body = $.getdata(Tele_AutoCheck_notice_body);
@@ -162,6 +162,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         }else{
             $.log(`\n` + '当前为变化通知，变化阈值为：' + ToSize(Tele_value, 3, 0, 1))
             let Change=$.getdata(Tele_AutoCheck_limit_choose) //判断是仅通用，还是任意值变化
+            if(Change==undefined) {$.setdata('false',Tele_AutoCheck_limit_choose);Change='false'}
             let val=false
             if(Change=='true'&&limitChange >= Tele_value) val=true
             if(Change=='false'&&(unlimitChange>=Tele_value||limitChange>=Tele_value)) val=true
@@ -178,7 +179,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         }
 
         panel['title'] = $.getdata(Tele_AutoCheck_key_brond)
-        panel['content'] = '查询时间:' + Tile_All['Tile_Time'] + `\n` + '今日定向:' + Tile_All['Tile_Today'] + `\n` + '本月定向:' + Tile_All['Tile_Month']
+        panel['content'] = '今日免流/跳点：' + Tile_All['Tile_Today'] + `\n` + '本月免流/跳点：' + Tile_All['Tile_Month'] + `\n` + '查询时间：' + Tile_All['Tile_Time']
 
     } catch (e) {Notice('电信余量','错误❌原因：'+e,'');$.log('错误：' + e)}
     $.done(panel)
