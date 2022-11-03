@@ -223,7 +223,7 @@ async function Login(Phone,PassWd) {//登录
     content.attach="iPhone"
 
     let headerInfos=new Object()
-    headerInfos.clientType='#9.6.1#channel50#iPhone X Plus#'
+    headerInfos.clientType='#13.2.3#channel61#iPhone 12#'
     headerInfos.code='userLoginNormal'
     headerInfos.shopId='20002'
     headerInfos.source='110003'
@@ -256,7 +256,7 @@ async function Query(Login_info) {//余量原始数据
     content.fieldData=fieldData
 
     let headerInfos=new Object()
-    headerInfos.clientType='#9.6.1#channel50#iPhone X Plus#'
+    headerInfos.clientType='#13.2.3#channel61#iPhone 12#'
     headerInfos.code='qryImportantData'
     headerInfos.shopId='20002'
     headerInfos.source='110003'
@@ -297,7 +297,7 @@ async function ProductName(Login_info) {//余量原始数据
     content.attach="test"
 
     let headerInfos=new Object()
-    headerInfos.clientType='#9.6.1#channel50#iPhone X Plus#'
+    headerInfos.clientType='#13.2.3#channel61#iPhone 12#'
     headerInfos.timestamp=Ts
     headerInfos.code='userFluxPackage'
     headerInfos.shopId='20002'
