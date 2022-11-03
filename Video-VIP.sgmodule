@@ -1,6 +1,6 @@
-#!url=https://raw.githubusercontent.com/gdopera/Surge/main/ksqh.Module
+#!url= https://raw.githubusercontent.com/gdopera/Surge/main/Video-VIP.sgmodule
 #!name=视频VIP
-#!desc=爱奇艺，优酷，腾讯，哔哩哔哩。。。转自墨鱼
+#!desc=爱奇艺，优酷，腾讯，哔哩哔哩，修改自墨鱼
 
 [MITM]
 hostname = %APPEND% m.iqiyi.com,z1.m1907.cn,m.youku.com,m.v.qq.com,m.bilibili.com
