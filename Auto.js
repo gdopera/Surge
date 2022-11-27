@@ -207,7 +207,7 @@ function formatMinutes(value) {
 async function Login(Phone,PassWd) {//登录
 
     let Ts=`${formatTime().year}${formatTime().month}${formatTime().day}${formatTime().hours}${formatTime().minutes}00`
-    let message=`iPhone 14 13.2.3${Phone}${Phone}${Ts}${PassWd}0$$$0.`
+    let message=`iPhone 12 13.2.3${Phone}${Phone}${Ts}${PassWd}0$$$0.`
 
     let fieldData=new Object()
     fieldData.accountType=''
@@ -223,7 +223,7 @@ async function Login(Phone,PassWd) {//登录
     content.attach="iPhone"
 
     let headerInfos=new Object()
-    headerInfos.clientType='#9.6.1#channel50#iPhone 14 Pro#'
+    headerInfos.clientType='#9.6.1#channel50#iPhone 12#'
     headerInfos.code='userLoginNormal'
     headerInfos.shopId='20002'
     headerInfos.source='110003'
@@ -256,7 +256,7 @@ async function Query(Login_info) {//余量原始数据
     content.fieldData=fieldData
 
     let headerInfos=new Object()
-    headerInfos.clientType='#9.6.1#channel50#iPhone X Plus#'
+    headerInfos.clientType='#9.6.1#channel50#iPhone 12#'
     headerInfos.code='qryImportantData'
     headerInfos.shopId='20002'
     headerInfos.source='110003'
@@ -297,7 +297,7 @@ async function ProductName(Login_info) {//余量原始数据
     content.attach="test"
 
     let headerInfos=new Object()
-    headerInfos.clientType='#9.6.1#channel50#iPhone X Plus#'
+    headerInfos.clientType='#9.6.1#channel50#iPhone 12#'
     headerInfos.timestamp=Ts
     headerInfos.code='userFluxPackage'
     headerInfos.shopId='20002'
