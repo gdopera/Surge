@@ -27,7 +27,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         title: '电信余量',
         content: ``,
         backgroundColor: "#0099FF",
-        icon: "hourglass.circle",
+        icon: "dial.max.fill",
     }
     try {
         
@@ -48,25 +48,22 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         else if (hoursused < 0 && lasthours <= 23) { minutesused = (60 - lastminutes) + (23 - lasthours + thishours) * 60 + thisminutes }
         //**********
 
-
-        let Tele_value = $.getdata(Tele_AutoCheck_threshold) //读取阈值
-
-        if (Tele_value == undefined) { $.setdata('', Tele_AutoCheck_threshold); Tele_value = '' }
-        
         let Tile_All = { Tile_Today: '', Tile_Month: '', Tile_Time: '' }
 
 
         let Phone = $.getdata(Tele_AutoCheck_LoginName)
         let PassWd = $.getdata(Tele_AutoCheck_LoginPw)
-
+        let Tele_value = $.getdata(Tele_AutoCheck_threshold) //读取阈值
+        
         if(Phone==undefined) {Phone='';$.setdata('',Tele_AutoCheck_LoginName)}
         if(PassWd==undefined) {PassWd='';$.setdata('',Tele_AutoCheck_LoginPw)}
-
+        if(Tele_value == undefined) { Tele_value = '' ;$.setdata('', Tele_AutoCheck_threshold)}
+        
 
         if(Phone==''||PassWd=='') {throw '请在Boxjs中设置登录账号与密码'}
 
         if(!isFirst){
-            do{jsonData = await Query($.getjson(Tele_AutoCheck_querybody))}while(jsonData!='err'&&jsonData.responseData!=null&&jsonData.responseData.data.flowInfo.commonFlow==null);
+            do{jsonData = await Query($.getjson(Tele_AutoCheck_querybody))}while(jsonData!='err'&&jsonData.responseData!=null&&jsonData.responseData.data.flowInfo.commonFlow.balance==null);
             $.setjson(jsonData,Tele_AutoCheck_packge_detail)
         }
 
@@ -80,7 +77,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
             if(Tokenexpired) $.log('当前Token已过期，尝试获取Token')
             $.log(`\n`+JSON.stringify(trylogin))
 			$.setjson(trylogin,Tele_AutoCheck_querybody)
-            do{jsonData = await Query(trylogin)}while(jsonData!='err'&&jsonData.responseData!=null&&jsonData.responseData.data.flowInfo.commonFlow==null);
+            do{jsonData = await Query(trylogin)}while(jsonData!='err'&&jsonData.responseData!=null&&jsonData.responseData.data.flowInfo.commonFlow.balance==null);
             $.setjson(jsonData,Tele_AutoCheck_packge_detail)
         }
 
@@ -133,8 +130,8 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         if (thishours < 10) { tile_hour = '0' + thishours }else { tile_hour = thishours }
         if (thisminutes < 10) { tile_minute = '0' + thisminutes }else { tile_minute = thisminutes }
 
-        Tile_All['Tile_Today'] = ToSize(tile_unlimitTotal, 1, 0, 1) + ' 通用: ' + ToSize(tile_limitTotal, 1, 0, 1)
-        Tile_All['Tile_Month'] = ToSize(tile_unlimitUsageTotal, 1, 0, 1) + ' 通用: ' + ToSize(tile_limitUsageTotal, 1, 0, 1)
+        Tile_All['Tile_Today'] = ToSize(tile_unlimitTotal, 1, 0, 1) + '/' + ToSize(tile_limitTotal, 1, 0, 1)
+        Tile_All['Tile_Month'] = ToSize(tile_unlimitUsageTotal, 1, 0, 1) + '/' + ToSize(tile_limitUsageTotal, 1, 0, 1)
         Tile_All['Tile_Time'] = tile_hour + ':' + tile_minute
 
         let notice_body = $.getdata(Tele_AutoCheck_notice_body);
@@ -142,8 +139,8 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
             notice_body = $.setdata("免/跳/总免/剩余", Tele_AutoCheck_notice_body)
             notice_body = $.getdata(Tele_AutoCheck_notice_body).split('/')
         } else { notice_body = $.getdata(Tele_AutoCheck_notice_body).split('/') }
-
-        $.log(`\n` + '流量卡名：' + brond + `\n` + '[1]' + brond + '通用：已用' + ToSize(ArrayQuery.limitusage, 2, 0, 1) +' 剩余：' + ToSize(ArrayQuery.limitleft, 2, 0, 1) +`\n` + '[2]' + brond + '定向：已用' + ToSize(ArrayQuery.unlimitusage, 2, 0, 1) +' 剩余：' + ToSize(ArrayQuery.unlimitleft, 2, 0, 1)+ `\n`)
+        
+        $.log('详细信息：'+$.toStr(AllInfo(jsonData).Phone.Bar)+`\n\n`+ '流量卡名：' + brond + `\n`+'账户余额：'+AllInfo(jsonData).Phone.Left+` `+'实时话费：'+AllInfo(jsonData).Phone.Used+`\n`+AllInfo(jsonData).Flow.Detail+`\n`+'国内语音/'+AllInfo(jsonData).Voice.Total+' 使用：'+AllInfo(jsonData).Voice.Used+` 剩余：`+AllInfo(jsonData).Voice.Used+`\n`+AllInfo(jsonData).Storage.Detail+`\n`+'流量总共使用：'+AllInfo(jsonData).Flow.AllUsed+`\n`+'云盘总共使用：'+AllInfo(jsonData).Storage.AllUsed+`\n`+AllInfo(jsonData).Integral+`\n`)
         $.log("上次通用使用：" + ToSize(limitLast, 2, 0, 1) + " 当前通用使用：" + ToSize(limitThis, 2, 0, 1))
         $.log("上次定向使用：" + ToSize(unlimitLast, 2, 0, 1) + " 当前定向使用：" + ToSize(unlimitThis, 2, 0, 1))
         $.log("通用变化量：" + ToSize(limitChange, 2, 0, 1) + " 定向变化量：" + ToSize(unlimitChange, 2, 0, 1))
@@ -157,7 +154,7 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
             $.setdata($.toStr(thisminutes), Tele_AutoCheck_minutestimeStore)
             title = brond + '  耗时:' + formatMinutes(minutesused)
             body = notice_body[0] + ToSize(unlimitChange, 2, 1, 1) + ' ' + notice_body[1] + ToSize(limitChange, 2, 1, 1)
-            body1 = notice_body[2] + ToSize(ArrayQuery.unlimitusage, 2, 1, 1) + ' ' + notice_body[3] + ToSize(ArrayQuery.limitleft, 2, 1, 1)
+            body1 = notice_body[2] + ToSize(ArrayQuery.unlimitusage, 2, 1, 1) + ' ' + notice_body[3] + ToSize(ArrayQuery.limitleft, 2, 1, 1)+`\n\n`+ '流量卡名：' + brond + `\n`+'账户余额：'+AllInfo(jsonData).Phone.Left+` `+'实时话费：'+AllInfo(jsonData).Phone.Used+`\n`+AllInfo(jsonData).Flow.Detail+`\n`+'国内语音/'+AllInfo(jsonData).Voice.Total+' 使用：'+AllInfo(jsonData).Voice.Used+` 剩余：`+AllInfo(jsonData).Voice.Used+`\n`+AllInfo(jsonData).Storage.Detail+`\n`+'流量总共使用：'+AllInfo(jsonData).Flow.AllUsed+`\n`+'云盘总共使用：'+AllInfo(jsonData).Storage.AllUsed+`\n`+AllInfo(jsonData).Integral
             Notice(title, body, body1)
         }else{
             $.log(`\n` + '当前为变化通知，变化阈值为：' + ToSize(Tele_value, 3, 0, 1))
@@ -173,15 +170,18 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
                 $.setdata($.toStr(thisminutes), Tele_AutoCheck_minutestimeStore)
                 title = brond + '  耗时:' + formatMinutes(minutesused)
                 body = notice_body[0] + ToSize(unlimitChange, 2, 1, 1) + ' ' + notice_body[1] + ToSize(limitChange, 2, 1, 1)
-                body1 = notice_body[2] + ToSize(ArrayQuery.unlimitusage, 2, 1, 1) + ' ' + notice_body[3] + ToSize(ArrayQuery.limitleft, 2, 1, 1)
+                body1 = notice_body[2] + ToSize(ArrayQuery.unlimitusage, 2, 1, 1) + ' ' + notice_body[3] + ToSize(ArrayQuery.limitleft, 2, 1, 1)+`\n\n`+ '流量卡名：' + brond + `\n`+'账户余额：'+AllInfo(jsonData).Phone.Left+` `+'实时话费：'+AllInfo(jsonData).Phone.Used+`\n`+AllInfo(jsonData).Flow.Detail+`\n`+'国内语音/'+AllInfo(jsonData).Voice.Total+' 使用：'+AllInfo(jsonData).Voice.Used+` 剩余：`+AllInfo(jsonData).Voice.Used+`\n`+AllInfo(jsonData).Storage.Detail+`\n`+'流量总共使用：'+AllInfo(jsonData).Flow.AllUsed+`\n`+'云盘总共使用：'+AllInfo(jsonData).Storage.AllUsed+`\n`+AllInfo(jsonData).Integral
                 Notice(title, body, body1)
             }
         }
 
         panel['title'] = $.getdata(Tele_AutoCheck_key_brond)
-        panel['content'] = '查询时间:' + Tile_All['Tile_Time'] + `\n` + '今日定向:' + Tile_All['Tile_Today'] + `\n` + '本月定向:' + Tile_All['Tile_Month']
+        panel['content'] = '今日免流/跳点：' + Tile_All['Tile_Today'] + `\n` + '本月免流/跳点：' + Tile_All['Tile_Month'] + `\n` + '查询时间：' + Tile_All['Tile_Time']
 
-    } catch (e) {Notice('电信余量','错误❌原因：'+e,'');$.log('错误：' + e)}
+    } catch (e) {
+        //Notice('电信余量','错误❌原因：'+e,'');
+        $.log('错误：' + e)
+    }
     $.done(panel)
 
 })()
@@ -207,7 +207,7 @@ function formatMinutes(value) {
 async function Login(Phone,PassWd) {//登录
 
     let Ts=`${formatTime().year}${formatTime().month}${formatTime().day}${formatTime().hours}${formatTime().minutes}00`
-    let message=`iPhone 1213.2.3${Phone}${Phone}${Ts}${PassWd}0$$$0.`
+    let message=`iPhone 14 13.2.3${Phone}${Phone}${Ts}${PassWd}0$$$0.`
 
     let fieldData=new Object()
     fieldData.accountType=''
@@ -223,7 +223,7 @@ async function Login(Phone,PassWd) {//登录
     content.attach="iPhone"
 
     let headerInfos=new Object()
-    headerInfos.clientType='#13.2.3#channel6.1#iPhone 12#'
+    headerInfos.clientType='#9.6.1#channel50#iPhone 14 Pro#'
     headerInfos.code='userLoginNormal'
     headerInfos.shopId='20002'
     headerInfos.source='110003'
@@ -239,7 +239,7 @@ async function Login(Phone,PassWd) {//登录
             url: 'https://appgologin.189.cn:9031/login/client/userLoginNormal',
             headers: headers,
             body: JSON.stringify(login_body)// 请求体
-        }, function (error, response, data) { resolve(JSON.parse(data)) })
+        }, function (error, response, data) { resolve(JSON.parse(data))})
     })
 }
 
@@ -256,7 +256,7 @@ async function Query(Login_info) {//余量原始数据
     content.fieldData=fieldData
 
     let headerInfos=new Object()
-    headerInfos.clientType='#13.2.3#channel6.1#iPhone 12#'
+    headerInfos.clientType='#9.6.1#channel50#iPhone X Plus#'
     headerInfos.code='qryImportantData'
     headerInfos.shopId='20002'
     headerInfos.source='110003'
@@ -297,7 +297,7 @@ async function ProductName(Login_info) {//余量原始数据
     content.attach="test"
 
     let headerInfos=new Object()
-    headerInfos.clientType='#13.2.3#channel6.1#iPhone 12#'
+    headerInfos.clientType='#9.6.1#channel50#iPhone X Plus#'
     headerInfos.timestamp=Ts
     headerInfos.code='userFluxPackage'
     headerInfos.shopId='20002'
@@ -319,6 +319,40 @@ async function ProductName(Login_info) {//余量原始数据
     })
 }
 
+function AllInfo(jsondata){
+	typeof jsondata!='object'?jsondata=$.toObj(jsondata):{}
+	let All=jsondata.responseData.data
+	let BalanceInfo={	
+		Used:All.balanceInfo.phoneBillRegion.subTitleHh,
+		Left:All.balanceInfo.indexBalanceDataInfo.balance+'元',
+		Bar:All.balanceInfo.phoneBillBars
+	}
+	let FlowInfo={
+		Detail:All.flowInfo.flowList[0].title+All.flowInfo.flowList[0].rightTitleEnd
+		+' '+All.flowInfo.flowList[0].leftTitle+'：'+All.flowInfo.flowList[0].leftTitleHh
+		+' '+All.flowInfo.flowList[0].rightTitle+'：'+All.flowInfo.flowList[0].rightTitleHh
+		+`\n`+All.flowInfo.flowList[1].title+All.flowInfo.flowList[1].rightTitleEnd
+		+` `+All.flowInfo.flowList[1].leftTitle+'：'+All.flowInfo.flowList[1].leftTitleHh
+		+` `+All.flowInfo.flowList[1].rightTitle+'：'+All.flowInfo.flowList[1].rightTitleHh,
+		AllUsed:All.flowInfo.flowRegion.subTitleHh
+	}
+	let VoiceInfo={
+		Used:All.voiceInfo.voiceDataInfo.used+'分钟',
+		Left:All.voiceInfo.voiceDataInfo.balance+'分钟',
+		Total:All.voiceInfo.voiceDataInfo.total+'分钟'
+	}
+	let IntegralInfo=All.integralInfo.title+'：'+All.integralInfo.integral+' 分'
+	let StorageInfo={	
+		Detail:All.storageInfo.flowList[0].title+All.storageInfo.flowList[0].rightTitleEnd
+		+` `+All.storageInfo.flowList[0].leftTitle+'：'+All.storageInfo.flowList[0].leftTitleHh
+		+` `+All.storageInfo.flowList[0].rightTitle+'：'+All.storageInfo.flowList[0].rightTitleHh
+		+`\n`+All.storageInfo.flowList[1].title+All.storageInfo.flowList[1].rightTitleEnd
+		+` `+All.storageInfo.flowList[1].leftTitle+'：'+All.storageInfo.flowList[1].leftTitleHh
+		+` `+All.storageInfo.flowList[1].rightTitle+'：'+All.storageInfo.flowList[1].rightTitleHh,
+		AllUsed:All.storageInfo.flowRegion.subTitleHh
+	}
+	return All_Info={Phone:BalanceInfo,Flow:FlowInfo,Voice:VoiceInfo,Integral:IntegralInfo,Storage:StorageInfo}
+}
 
 function Query_All(jsonData) {//原始量
 	let SetVal=$.getdata(Tele_AutoCheck_SetVal)
