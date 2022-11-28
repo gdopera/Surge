@@ -207,7 +207,7 @@ function formatMinutes(value) {
 async function Login(Phone,PassWd) {//登录
 
     let Ts=`${formatTime().year}${formatTime().month}${formatTime().day}${formatTime().hours}${formatTime().minutes}00`
-    let message=`iPhone 14 13.2.3${Phone}${Phone}${Ts}${PassWd}0$$$0.`
+    let message=`iPhone 12 13.2.3${Phone}${Phone}${Ts}${PassWd}0$$$0.`
 
     let fieldData=new Object()
     fieldData.accountType=''
