@@ -159,8 +159,8 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
             Time:formatMinutes(minutesused),// '[时]'
             TimeLimit:ToSize(limitChange, 2, 1, 1),// '[跳]'
             TimeUnlimt:ToSize(unlimitChange, 2, 1, 1),// '[免]'
-            TodayUnlimitUse:ToSize(tile_unlimitTotal, 1, 0, 1),// '[今免]'
             TodayLimitUse:ToSize(tile_limitTotal, 1, 0, 1),// '[今跳]'
+            TodayUnlimitUse:ToSize(tile_unlimitTotal, 1, 0, 1),// '[今免]'
             AllLimitUse:ToSize(ArrayQuery.limitusage, 2, 1, 1),// '[通用]'
             AllLimitLeft:ToSize(ArrayQuery.limitleft, 2, 1, 1),// '[通剩]'
             AllLimit:ToSize(ArrayQuery.limitall, 2, 1, 1),// '[通总]'
@@ -221,10 +221,10 @@ function renderTpl(tpl, data) {
       .replace('[套]', data.Title)//套餐名
       .replace('[话]', '余额'+data.Bill)//话费
       .replace('[时]', '耗时:'+data.Time)//两次查询间隔时间
-      .replace('[跳]', '当前跳'+data.TimeLimit)//两次查询内跳点
-      .replace('[免]', '当前免'+data.TimeUnlimt)//两次查询内免流
-      .replace('[今免]', '今日免'+data.TodayUnlimitUse)//今日免流
-      .replace('[今跳]', '今日跳'+data.TodayLimitUse)//今日跳点
+      .replace('[跳]', '跳'+data.TimeLimit)//两次查询内跳点
+      .replace('[免]', '免'+data.TimeUnlimt)//两次查询内免流
+      .replace('[今跳]', '日跳'+data.TodayLimitUse)//今日跳点
+      .replace('[今免]', '日免'+data.TodayUnlimitUse)//今日免流
       .replace('[通用]', '通用'+data.AllLimitUse)//单周期总共通用
       .replace('[通剩]', '通剩'+data.AllLimitLeft)//
       .replace('[通总]', '通总'+data.AllLimit)//
