@@ -121,11 +121,11 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         if (tile_date == '') { $.setdata($.toStr(Days), Tele_AutoCheck_day) }//初次
         let tile_unlimittoday = $.getdata(Tele_AutoCheck_unlimittoday)
         let tile_limittoday = $.getdata(Tele_AutoCheck_limittoday)
-        if ((thishours == 0 && thisminutes == 0) || (tile_unlimittoday == '' || tile_limittoday == '') || tile_date != $.toStr(Days))//面板更新时间
+        if (Tokenexpired||(thishours == 0 && thisminutes == 0) || (tile_unlimittoday == '' || tile_limittoday == '') || tile_date != $.toStr(Days))//面板更新时间
         {
             $.setdata($.toStr(Days), Tele_AutoCheck_day)
-            $.setdata($.toStr(ArrayQuery.unlimitusage), Tele_AutoCheck_unlimittoday)
-            $.setdata($.toStr(ArrayQuery.limitusage), Tele_AutoCheck_limittoday)
+            $.setdata($.toStr(ArrayQuery.unlimitusage), Tele_AutoCheck_unlimittoday);tile_unlimittoday=ArrayQuery.unlimitusage
+            $.setdata($.toStr(ArrayQuery.limitusage), Tele_AutoCheck_limittoday);tile_limittoday=ArrayQuery.limitusage
         }
         let tile_unlimitTotal = ArrayQuery.unlimitusage - tile_unlimittoday//面板今日定向用量
         let tile_limitTotal = ArrayQuery.limitusage - tile_limittoday//面板今天通用用量
@@ -152,11 +152,10 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
         } 
         else notice_body = $.getdata(Tele_AutoCheck_notice_body).split('-')
 
-
         //通知体：
-
         let NoticeTplData={
             Title:brond,// '[套]'
+            Bill:AllInfo(jsonData).Phone.Left,//[话]
             Time:formatMinutes(minutesused),// '[时]'
             TimeLimit:ToSize(limitChange, 2, 1, 1),// '[跳]'
             TimeUnlimt:ToSize(unlimitChange, 2, 1, 1),// '[免]'
@@ -164,20 +163,20 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
             TodayUnlimitUse:ToSize(tile_unlimitTotal, 1, 0, 1),// '[今免]'
             AllLimitUse:ToSize(ArrayQuery.limitusage, 2, 1, 1),// '[通用]'
             AllLimitLeft:ToSize(ArrayQuery.limitleft, 2, 1, 1),// '[通剩]'
-            AllLimit:ToSize(ArrayQuery.unlimitall, 2, 1, 1),// '[通总]'
+            AllLimit:ToSize(ArrayQuery.limitall, 2, 1, 1),// '[通总]'
             AllUnlimitUse:ToSize(ArrayQuery.unlimitusage, 2, 1, 1),// '[定用]'
             AllUnlimitLeft:ToSize(ArrayQuery.unlimitleft, 2, 1, 1),// '[定剩]'
             AllUnlimit:ToSize(ArrayQuery.unlimitall, 2, 1, 1),// '[定总]'
+            All:AllInfo(jsonData).Flow.AllUsed,//[总]
+            AllVoiceUsed:AllInfo(jsonData).Voice.Used,//[语用]
+            AllVoiceLeft:AllInfo(jsonData).Voice.Left,//[语剩]
+            AllVoice:AllInfo(jsonData).Voice.Total,//[语总]
         }
         var title=''
         var body=''
-        // var body1=''
+
         for(var i in notice_body[0].split('/')) title += notice_body[0].split('/')[i]//遍历标题行
         for(var i in notice_body[1].split('/')) body += notice_body[1].split('/')[i]//遍历body行
-
-        // title = brond + '  耗时:' + formatMinutes(minutesused)
-        // body = notice_body[0] + ToSize(unlimitChange, 2, 1, 1) + ' ' + notice_body[1] + ToSize(limitChange, 2, 1, 1)
-        // body1 = notice_body[2] + ToSize(ArrayQuery.unlimitusage, 2, 1, 1) + ' ' + notice_body[3] + ToSize(ArrayQuery.limitleft, 2, 1, 1)
 
         if(Tele_value==''){
             $.log(`\n` + '当前为定时通知 间隔时间请去Cron中修改' )
@@ -220,17 +219,22 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
 function renderTpl(tpl, data) {
     return tpl
       .replace('[套]', data.Title)//套餐名
+      .replace('[话]', '余额'+data.Bill)//话费
       .replace('[时]', '耗时:'+data.Time)//两次查询间隔时间
-      .replace('[跳]', '当前跳'+data.TimeLimit)//两次查询内跳点
-      .replace('[免]', '当前免'+data.TimeUnlimt)//两次查询内免流
-      .replace('[今跳]', '今日跳'+data.TodayLimitUse)//今日跳点
-      .replace('[今免]', '今日免'+data.TodayUnlimitUse)//今日免流
+      .replace('[跳]', '跳'+data.TimeLimit)//两次查询内跳点
+      .replace('[免]', '免'+data.TimeUnlimt)//两次查询内免流
+      .replace('[今跳]', '日跳'+data.TodayLimitUse)//今日跳点
+      .replace('[今免]', '日免'+data.TodayUnlimitUse)//今日免流
       .replace('[通用]', '通用'+data.AllLimitUse)//单周期总共通用
-      .replace('[通剩]', '通余'+data.AllLimitLeft)//
+      .replace('[通剩]', '通剩'+data.AllLimitLeft)//
       .replace('[通总]', '通总'+data.AllLimit)//
-      .replace('[定用]', '总免'+data.AllUnlimitUse)//单周期总共免流
-      .replace('[定剩]', '定余'+data.AllUnlimitLeft)//
+      .replace('[定用]', '定用'+data.AllUnlimitUse)//单周期总共免流
+      .replace('[定剩]', '定剩'+data.AllUnlimitLeft)//
       .replace('[定总]', '定总'+data.AllUnlimit)//
+      .replace('[总用]', '总用'+data.All)//总共使用流量
+      .replace('[语用]', '语用'+data.AllVoiceUsed)//语音使用
+      .replace('[语剩]', '语剩'+data.AllVoiceLeft)//语音剩余
+      .replace('[语总]', '语总'+data.AllVoice)//语音总时长
       .replace(/  +/g, ' ')
 }
 
