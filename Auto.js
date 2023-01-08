@@ -157,8 +157,8 @@ const Tele_AutoCheck_unlimittoday=`Tele_AutoCheck.unlimittoday`
             Title:brond,// '[套]'
             Bill:AllInfo(jsonData).Phone.Left,//[话]
             Time:formatMinutes(minutesused),// '[时]'
-            TimeLimit:ToSize(limitChange, 2, 1, 1),// '[跳]'
             TimeUnlimt:ToSize(unlimitChange, 2, 1, 1),// '[免]'
+            TimeLimit:ToSize(limitChange, 2, 1, 1),// '[跳]'
             TodayUnlimitUse:ToSize(tile_unlimitTotal, 1, 0, 1),// '[今免]'
             TodayLimitUse:ToSize(tile_limitTotal, 1, 0, 1),// '[今跳]'
             AllLimitUse:ToSize(ArrayQuery.limitusage, 2, 1, 1),// '[通用]'
