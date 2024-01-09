@@ -1,0 +1,13 @@
+#!name=贴吧Cookie
+#!desc=贴吧自动签到Cookie
+
+[MITM]
+hostname = %APPEND% c.tieba.baidu.com, tiebac.baidu.com
+
+[Script]
+# 百度贴吧每日自动签到
+tieba_signin = type=http-request, pattern=^https?:\/\/(c\.tieba\.baidu\.com|180\.97\.\d+\.\d+)\/c\/s\/login, script-path=https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/tieba/tieba_signin.js, timeout=60
+
+tieba_signin = type=http-request, pattern=^https?:\/\/c\.tieba\.baidu\.com\/c\/s\/channelIconConfig, script-path=https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/tieba/tieba_signin.js, timeout=60
+
+tieba_signin = type=http-request, pattern=^https?:\/\/tiebac\.baidu\.com\/c\/u\/follow\/getFoldedMessageUserInfo, script-path=https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/tieba/tieba_signin.js, timeout=60
