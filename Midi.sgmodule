@@ -1,0 +1,8 @@
+#!name=迷底时钟
+#!desc=XiaoMao脚本
+
+[MITM]
+hostname = %APPEND% api.revenuecat.com
+
+[Script]
+md = type=http-response, pattern=https:\/\/api\.revenuecat\.com\/v1\/(subscribers|receipts), script-path=https://raw.githubusercontent.com/xiaomaoJT/QxScript/main/rewrite/boxJS/source/md.js, requires-body=true, max-size=-1, timeout=60
