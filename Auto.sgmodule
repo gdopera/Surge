@@ -6,4 +6,4 @@
 流量监控 = script-name=流量监控,update-interval=3600
 
 [Script]
-流量监控 = type=cron,script-path=https://ghproxy.com/https://raw.githubusercontent.com/gdopera/Surge/main/Auto.js
+流量监控 = type=cron,script-path=https://github.com/ChinaTelecomOperators/ChinaTelecom/releases/download/Prerelease-Alpha/Tele_Cellular_Auto.js
