@@ -1,0 +1,8 @@
+#!name=IntoLive
+#!desc=XiaoMaoIntoLive
+
+[MITM]
+hostname = %APPEND% buy.itunes.apple.com
+
+[Script]
+il = type=http-response, pattern=https:\/\/buy\.itunes\.apple\.com\/verifyReceipt, script-path=https://raw.githubusercontent.com/xiaomaoJT/QxScript/main/rewrite/boxJS/source/il.js, requires-body=true, max-size=-1, timeout=60
