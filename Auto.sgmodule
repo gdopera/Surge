@@ -3,7 +3,6 @@
 #!desc=电信余量，花猫作品。。。
 
 [Script]
-<aside>
 电信余量 = type=cron,cronexp=*/5 * * * *,wake-system=1,script-path=https://github.com/ChinaTelecomOperators/ChinaTelecom/releases/download/Prerelease-Alpha/Tele_Cellular_Auto.js,script-update-interval=0
 
 Telecom_panel= script-path=https://github.com/ChinaTelecomOperators/ChinaTelecom/releases/download/Prerelease-Alpha/Tele_Cellular_Auto.js,type=generic
