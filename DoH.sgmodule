@@ -3,7 +3,4 @@
 #!system=mac
 
 [Script]
-电信余量 = type=,script-path=https://raw.githubusercontent.com/gdopera/Surge/main/DoH.js,desc=https://raw.githubusercontent.com/gdopera/Surge/main/DoH.js
-
-[Host]
-* = script:DoH.js
+DoH = type=,script-path=https://raw.githubusercontent.com/gdopera/Surge/main/DoH.js,desc=https://raw.githubusercontent.com/gdopera/Surge/main/DoH.js
