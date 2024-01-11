@@ -1,3 +1,6 @@
+https://raw.githubusercontent.com/gdopera/Surge/main/Auto.sgmodule
+
+
 [Script]
 流量监控 = type=cron,script-path=https://github.com/ChinaTelecomOperators/ChinaTelecom/releases/download/Prerelease-Alpha/Tele_Cellular_Auto.js
 <aside>
