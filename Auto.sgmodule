@@ -9,4 +9,4 @@
 电信余量 = script-path=https://raw.githubusercontent.com/gdopera/Surge/main/Auto.js
 
 [Panel]
-电信余量 = title="电信余量",content="余量信息面板",style=info,script-name=Telecom_panel
+电信余量 = title="电信余量",content="余量信息面板",style=info,script-name= 电信余量
