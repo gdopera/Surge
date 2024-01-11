@@ -3,10 +3,10 @@
 #!desc=电信余量，花猫作品。。。
 
 [Script]
-流量监控 = type=cron,script-path=https://github.com/ChinaTelecomOperators/ChinaTelecom/releases/download/Prerelease-Alpha/Tele_Cellular_Auto.js
+流量监控 = type=cron,script-path=https://raw.githubusercontent.com/gdopera/Surge/main/Auto.js
 [Script]
-电信余量 = type=cron,cronexp=*/5 * * * *,wake-system=1,script-path=https://github.com/ChinaTelecomOperators/ChinaTelecom/releases/download/Prerelease-Alpha/Tele_Cellular_Auto.js,script-update-interval=0
-Telecom_panel= script-path=https://github.com/ChinaTelecomOperators/ChinaTelecom/releases/download/Prerelease-Alpha/Tele_Cellular_Auto.js,type=generic
+电信余量 = type=cron,cronexp=*/5 * * * *,wake-system=1,script-path=https://raw.githubusercontent.com/gdopera/Surge/main/Auto.js
+Telecom_panel= script-path=https://raw.githubusercontent.com/gdopera/Surge/main/Auto.js
 
 [Panel]
 Telecom_panel = title="电信余量",content="余量信息面板",style=info,script-name=Telecom_panel
