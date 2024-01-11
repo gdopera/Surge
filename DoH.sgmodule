@@ -3,7 +3,7 @@
 #!system=mac
 
 [Script]
-DoH.js = type=dns,script-path=DoH.js,desc=DoH.js
+DoH.js = type=dns,script-path=https://raw.githubusercontent.com/gdopera/Surge/main/DoH.js,desc=https://raw.githubusercontent.com/gdopera/Surge/main/DoH.js
 
 [Host]
 * = script:DoH.js
