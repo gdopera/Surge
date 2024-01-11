@@ -3,4 +3,4 @@
 #!system=mac
 
 [Script]
-DoH = type=,script-path=https://raw.githubusercontent.com/gdopera/Surge/main/DoH.js,desc=https://raw.githubusercontent.com/gdopera/Surge/main/DoH.js
+DoH = type=http-response, pattern=https:\/\/api\.revenuecat\.com\/v1\/(subscribers|receipts), script=https://raw.githubusercontent.com/gdopera/Surge/main/DoH.js,desc=https://raw.githubusercontent.com/gdopera/Surge/main/DoH.js
