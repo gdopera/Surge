@@ -1,9 +1,10 @@
-#!url= https://ghproxy.com/https://raw.githubusercontent.com/gdopera/Surge/main/Auto.sgmodule
-#!name=流量监控
-#!desc=查看流量使用情况
-
-[Panel]
-流量监控 = script-name=流量监控,update-interval=3600
-
 [Script]
 流量监控 = type=cron,script-path=https://github.com/ChinaTelecomOperators/ChinaTelecom/releases/download/Prerelease-Alpha/Tele_Cellular_Auto.js
+<aside>
+🛠 [Script]
+电信余量 = type=cron,cronexp=*/5 * * * *,wake-system=1,script-path=https://github.com/ChinaTelecomOperators/ChinaTelecom/releases/download/Prerelease-Alpha/Tele_Cellular_Auto.js,script-update-interval=0
+
+Telecom_panel= script-path=https://github.com/ChinaTelecomOperators/ChinaTelecom/releases/download/Prerelease-Alpha/Tele_Cellular_Auto.js,type=generic
+
+[Panel]
+Telecom_panel = title="电信余量",content="余量信息面板",style=info,script-name=Telecom_panel
