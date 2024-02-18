@@ -1,9 +1,0 @@
-#!url=https://raw.githubusercontent.com/gdopera/Surge/main/IPXX.sgmodule
-#!name=当前免流信息
-#!desc=请前往无视安装
-
-[Panel]
-国内直连 = script-name= 国内直连, title="节点详情", content="请刷新", style=info, update-interval=1
-
-[Script]
-国内直连 = type=generic,timeout=3,script-path=https://raw.githubusercontent.com/gdopera/Surge/main/IPxx.js
