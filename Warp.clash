@@ -11,7 +11,7 @@ proxies:
   private-key: CPSt0lISslKe4K0gbT7oUVrcnxV4PZKm++bCodkNwEQ=
   public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
   remote-dns-resolve: true
-  server: jp.139394.xyz
+  server: 162.159.193.1
   type: wireguard
   udp: true
 - dns:
