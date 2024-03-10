@@ -1,0 +1,246 @@
+- allow-lan: true
+cfw-bypass:
+- localhost
+- 127.*
+- 10.*
+- 172.16.*
+- 172.17.*
+- 172.18.*
+- 172.19.*
+- 172.20.*
+- 172.21.*
+- 172.22.*
+- 172.23.*
+- 172.24.*
+- 172.25.*
+- 172.26.*
+- 172.27.*
+- 172.28.*
+- 172.29.*
+- 172.30.*
+- 172.31.*
+- 192.168.*
+- <local>
+dns:
+  default-nameserver:
+  - 223.5.5.5
+  - 119.29.29.29
+  enable: true
+  enhanced-mode: fake-ip
+  fake-ip-filter:
+  - '*.lan'
+  - '*.local'
+  - dns.msftncsi.com
+  - www.msftncsi.com
+  - www.msftconnecttest.com
+  - stun.*.*.*
+  - stun.*.*
+  - miwifi.com
+  - music.163.com
+  - '*.music.163.com'
+  - '*.126.net'
+  - api-jooxtt.sanook.com
+  - api.joox.com
+  - joox.com
+  - y.qq.com
+  - '*.y.qq.com'
+  - streamoc.music.tc.qq.com
+  - mobileoc.music.tc.qq.com
+  - isure.stream.qqmusic.qq.com
+  - dl.stream.qqmusic.qq.com
+  - aqqmusic.tc.qq.com
+  - amobile.music.tc.qq.com
+  - '*.xiami.com'
+  - '*.music.migu.cn'
+  - music.migu.cn
+  - netis.cc
+  - router.asus.com
+  - repeater.asus.com
+  - routerlogin.com
+  - routerlogin.net
+  - tendawifi.com
+  - tendawifi.net
+  - tplinklogin.net
+  - tplinkwifi.net
+  - tplinkrepeater.net
+  - '*.ntp.org.cn'
+  - '*.openwrt.pool.ntp.org'
+  - '*.msftconnecttest.com'
+  - '*.msftncsi.com'
+  - localhost.ptlogin2.qq.com
+  - '*.*.*.srv.nintendo.net'
+  - '*.*.stun.playstation.net'
+  - xbox.*.*.microsoft.com
+  - '*.ipv6.microsoft.com'
+  - '*.*.xboxlive.com'
+  - speedtest.cros.wr.pvp.net
+  fake-ip-range: 198.18.0.1/16
+  fallback:
+  - tls://101.101.101.101:853
+  - https://101.101.101.101/dns-query
+  - https://public.dns.iij.jp/dns-query
+  - https://208.67.220.220/dns-query
+  fallback-filter:
+    domain:
+    - +.google.com
+    - +.facebook.com
+    - +.twitter.com
+    - +.youtube.com
+    - +.xn--ngstr-lra8j.com
+    - +.google.cn
+    - +.googleapis.cn
+    - +.googleapis.com
+    - +.gvt1.com
+    - +.paoluz.com
+    - +.paoluz.link
+    - +.paoluz.xyz
+    - +.sodacity-funk.xyz
+    - +.nloli.xyz
+    - +.jsdelivr.net
+    - +.proton.me
+    geoip: true
+    ipcidr:
+    - 240.0.0.0/4
+    - 0.0.0.0/32
+    - 127.0.0.1/32
+  ipv6: true
+  nameserver:
+  - tls://223.5.5.5:853
+  - https://223.6.6.6/dns-query
+  - https://120.53.53.53/dns-query
+external-controller: 127.0.0.1:9090
+log-level: info
+mode: Rule
+port: 7890
+proxies:
+- dns:
+  - 1.1.1.1
+  - 1.0.0.1
+  ip: 172.16.0.2
+  mtu: 1280
+  name: 🇳🇱 NL-CF-WARP-1
+  port: 8886
+  private-key: SGLuWQWYQAcfzSqbNEwChIBjnqQahZdSsORm752/Nns=
+  public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
+  remote-dns-resolve: true
+  server: 188.114.98.114
+  type: wireguard
+  udp: true
+- dns:
+  - 1.1.1.1
+  - 1.0.0.1
+  ip: 172.16.0.2
+  mtu: 1280
+  name: 🇳🇱 NL-CF-WARP-2
+  port: 8886
+  private-key: SGLuWQWYQAcfzSqbNEwChIBjnqQahZdSsORm752/Nns=
+  public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
+  remote-dns-resolve: true
+  server: 188.114.96.236
+  type: wireguard
+  udp: true
+- dns:
+  - 1.1.1.1
+  - 1.0.0.1
+  ip: 172.16.0.2
+  mtu: 1280
+  name: 🇳🇱 NL-CF-WARP-3
+  port: 8886
+  private-key: SGLuWQWYQAcfzSqbNEwChIBjnqQahZdSsORm752/Nns=
+  public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
+  remote-dns-resolve: true
+  server: 188.114.97.113
+  type: wireguard
+  udp: true
+- dns:
+  - 1.1.1.1
+  - 1.0.0.1
+  ip: 172.16.0.2
+  mtu: 1280
+  name: 🇳🇱 NL-CF-WARP-4
+  port: 8886
+  private-key: SGLuWQWYQAcfzSqbNEwChIBjnqQahZdSsORm752/Nns=
+  public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
+  remote-dns-resolve: true
+  server: 188.114.99.147
+  type: wireguard
+  udp: true
+- dns:
+  - 1.1.1.1
+  - 1.0.0.1
+  ip: 172.16.0.2
+  mtu: 1280
+  name: 🇳🇱 NL-CF-WARP-5
+  port: 3854
+  private-key: SGLuWQWYQAcfzSqbNEwChIBjnqQahZdSsORm752/Nns=
+  public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
+  remote-dns-resolve: true
+  server: 188.114.97.34
+  type: wireguard
+  udp: true
+- dns:
+  - 1.1.1.1
+  - 1.0.0.1
+  ip: 172.16.0.2
+  mtu: 1280
+  name: 🇳🇱 NL-CF-WARP-6
+  port: 3854
+  private-key: SGLuWQWYQAcfzSqbNEwChIBjnqQahZdSsORm752/Nns=
+  public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
+  remote-dns-resolve: true
+  server: 188.114.96.211
+  type: wireguard
+  udp: true
+- dns:
+  - 1.1.1.1
+  - 1.0.0.1
+  ip: 172.16.0.2
+  mtu: 1280
+  name: 🇳🇱 NL-CF-WARP-7
+  port: 8886
+  private-key: SGLuWQWYQAcfzSqbNEwChIBjnqQahZdSsORm752/Nns=
+  public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
+  remote-dns-resolve: true
+  server: 188.114.96.235
+  type: wireguard
+  udp: true
+- dns:
+  - 1.1.1.1
+  - 1.0.0.1
+  ip: 172.16.0.2
+  mtu: 1280
+  name: 🇳🇱 NL-CF-WARP-8
+  port: 8886
+  private-key: SGLuWQWYQAcfzSqbNEwChIBjnqQahZdSsORm752/Nns=
+  public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
+  remote-dns-resolve: true
+  server: 188.114.97.75
+  type: wireguard
+  udp: true
+- dns:
+  - 1.1.1.1
+  - 1.0.0.1
+  ip: 172.16.0.2
+  mtu: 1280
+  name: 🇺🇸 US-CF-WARP-9
+  port: 8886
+  private-key: SGLuWQWYQAcfzSqbNEwChIBjnqQahZdSsORm752/Nns=
+  public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
+  remote-dns-resolve: true
+  server: 162.159.192.43
+  type: wireguard
+  udp: true
+- dns:
+  - 1.1.1.1
+  - 1.0.0.1
+  ip: 172.16.0.2
+  mtu: 1280
+  name: 🇳🇱 NL-CF-WARP-10
+  port: 8886
+  private-key: SGLuWQWYQAcfzSqbNEwChIBjnqQahZdSsORm752/Nns=
+  public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
+  remote-dns-resolve: true
+  server: 188.114.98.229
+  type: wireguard
+  udp: true
+socks-port: 7891
