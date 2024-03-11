@@ -125,13 +125,13 @@ proxies:
   - 2606:4700:4700::1111
   - 2001:4860:4860::8888
   ip: 172.16.0.0/32, 2606:4700:110:8226:2e92:7705:e4f2:f55b/128
-  mtu: 1280
+  mtu: 1313
   name: 🇨🇳 WARP-9
   port: 2408
   private-key: CPSt0lISslKe4K0gbT7oUVrcnxV4PZKm++bCodkNwEQ=
   public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
   remote-dns-resolve: true
-  server: 162.159.193.9
+  server: jp.139394.xyz
   type: wireguard
   udp: true
 - dns:
@@ -140,12 +140,12 @@ proxies:
   - 2606:4700:4700::1111
   - 2001:4860:4860::8888
   ip: 172.16.0.0/32, 2606:4700:110:8226:2e92:7705:e4f2:f55b/128
-  mtu: 1280
+  mtu: 1314
   name: 🇨🇳 WARP-10
   port: 2408
   private-key: CPSt0lISslKe4K0gbT7oUVrcnxV4PZKm++bCodkNwEQ=
   public-key: bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=
   remote-dns-resolve: true
-  server: 162.159.193.10
+  server: wg.139394.xyz
   type: wireguard
   udp: true
